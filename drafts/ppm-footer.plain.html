@@ -1,0 +1,35 @@
+<!--
+  Footer fragment for drafts/ppm-home.html (cmp-007).
+
+  Authored as the two rows the source renders: logo / address / social, then
+  copyright / policy links. blocks/footer/footer.js appends this verbatim, so
+  the row layout is entirely footer.css's job.
+
+  The two-row layout, inline address, social row and separated policy list are
+  now built in blocks/footer/footer.css, scoped to body.ppm so the footer of
+  every other site in the repo is unaffected. The policy links render above
+  the copyright below 900px -- the reverse of the order authored here -- which
+  is why both carry an explicit `order`.
+
+  See capture/www-ppmamerica-com/chrome-verification.md, including D2: the
+  footer is currently full-bleed while the page content is capped at 1200.
+-->
+<div>
+  <p><a href="/home" title="PPM America"><img src="./media/ppm-logo.png" alt="PPM America" width="1108" height="167"></a></p>
+  <ul>
+    <li>225 West Wacker Drive</li>
+    <li>Suite 1200</li>
+    <li>Chicago, IL 60606</li>
+    <li><a href="tel:+13126342500">312-634-2500</a></li>
+  </ul>
+  <p><a href="https://www.linkedin.com/company/ppm-america" title="Visit our LinkedIn page"><img src="./media/linkedin.svg" alt="Visit our LinkedIn page" width="24" height="24"></a></p>
+</div>
+<div>
+  <p>&copy; 2026 PPM America, Inc. All rights reserved.</p>
+  <ul>
+    <li><a href="/our-story/contact-us">Contact Us</a></li>
+    <li><a href="/privacy-policy">Privacy Policy</a></li>
+    <li><a href="/terms-and-conditions">Terms and Conditions</a></li>
+    <li><a href="/social">Social</a></li>
+  </ul>
+</div>

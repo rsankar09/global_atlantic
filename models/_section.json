@@ -33,6 +33,26 @@
             {
               "name": "Highlight",
               "value": "highlight"
+            },
+            {
+              "name": "Light Band",
+              "value": "light"
+            },
+            {
+              "name": "Dark Band",
+              "value": "dark"
+            },
+            {
+              "name": "Rule Above",
+              "value": "divided"
+            },
+            {
+              "name": "Content to Edges",
+              "value": "flush"
+            },
+            {
+              "name": "Heading Beside Content",
+              "value": "split-33-66"
             }
           ]
         }
@@ -50,7 +70,8 @@
         "hero",
         "cards",
         "columns",
-        "fragment"
+        "fragment",
+        "stats"
       ]
     }
   ]

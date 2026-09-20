@@ -136,6 +136,48 @@
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "Light Band",
+            "value": "light"
+          },
+          {
+            "name": "Dark Band",
+            "value": "dark"
+          },
+          {
+            "name": "Rule Above",
+            "value": "divided"
+          },
+          {
+            "name": "Content to Edges",
+            "value": "flush"
+          },
+          {
+            "name": "Heading Beside Content",
+            "value": "split-33-66"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cards",
+    "fields": [
+      {
+        "component": "multiselect",
+        "valueType": "string",
+        "name": "classes",
+        "value": "",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Square media",
+            "value": "square"
+          },
+          {
+            "name": "No card border",
+            "value": "plain"
           }
         ]
       }
@@ -152,11 +194,24 @@
         "multi": false
       },
       {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "value": "",
+        "label": "Alt"
+      },
+      {
         "component": "richtext",
         "name": "text",
         "value": "",
         "label": "Text",
         "valueType": "string"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link",
+        "description": "Optional. Makes the whole card a link to this page."
       }
     ]
   },
@@ -176,6 +231,27 @@
         "name": "rows",
         "value": "",
         "label": "Rows"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "classes",
+        "value": "",
+        "label": "Layout",
+        "options": [
+          {
+            "name": "Equal widths",
+            "value": ""
+          },
+          {
+            "name": "One third / two thirds",
+            "value": "columns-33-66"
+          },
+          {
+            "name": "Media and text promo",
+            "value": "flush"
+          }
+        ]
       }
     ]
   },
@@ -212,6 +288,49 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "stats",
+    "fields": [
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "classes",
+        "label": "Size",
+        "value": "",
+        "options": [
+          {
+            "name": "Large",
+            "value": ""
+          },
+          {
+            "name": "Small",
+            "value": "small"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stat",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "figure",
+        "value": "",
+        "label": "Figure",
+        "description": "The number with its symbol, for example $101, 53% or 110"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "label",
+        "value": "",
+        "label": "Label",
+        "description": "Caption below the figure. Supports a superscript footnote marker."
       }
     ]
   }

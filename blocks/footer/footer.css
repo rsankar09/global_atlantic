@@ -18,3 +18,239 @@ footer .footer p {
     padding: 40px 32px 24px;
   }
 }
+
+/*
+ * ---------------------------------------------------------------------------
+ * PPM theme
+ *
+ * Scoped to `body.ppm` for the same reason as the header: this block is shared
+ * by every site in the repo. Tokens live in styles/styles.css.
+ *
+ * The footer fragment authors two rows, which decorateMain() turns into two
+ * `.section > .default-content-wrapper` groups:
+ *
+ *   row 1  p(logo)       ul(address)   p(social)
+ *   row 2  p(copyright)  ul(policy)
+ *
+ * That order is the contract; the visual order differs per breakpoint and is
+ * set with `order` explicitly on both sides rather than left to the DOM.
+ *
+ * Measurements from capture/www-ppmamerica-com: footer rect 15,2694,1410,160
+ * with 28px of content padding-top, row 1 h=51 and row 2 h=81.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * The source footer element is itself transparent; the tint comes from a
+ * `cmp-container--gray-theme` band (sampled #f4f4f4) that wraps both the
+ * footer and a disclosure paragraph above it. The boilerplate's --light-color
+ * is #f8f8f8 -- 4/255 off and visually indistinguishable -- so the stock
+ * background is reused rather than a near-duplicate token introduced.
+ *
+ * The source scales its footer type *up* with viewport -- the copyright line
+ * measures 249px at 375, 290px at 768 and 331px at 1440, i.e. 12/14/16px --
+ * which is the opposite of the boilerplate's --body-font-size-* tokens. It is
+ * therefore set here, snapped to the project's 600/900 breakpoints rather
+ * than the capture's 375/768/1440.
+ */
+body.ppm footer {
+  font-size: 12px;
+}
+
+@media (width >= 600px) {
+  body.ppm footer {
+    font-size: 14px;
+  }
+}
+
+@media (width >= 900px) {
+  body.ppm footer {
+    font-size: 16px;
+  }
+}
+
+/* full-bleed with a 20px gutter rather than the boilerplate's centred column */
+body.ppm footer .footer > div {
+  max-width: none;
+  padding: 28px 20px 0;
+}
+
+/*
+ * Stacked on narrow viewports. 8px matches the source's measured rhythm
+ * there (6/5/7px between the logo, address, social and policy blocks); the
+ * larger step it leaves between the two rows is restored below.
+ */
+body.ppm footer .footer .default-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.ppm footer .footer .section:last-child {
+  margin-top: 10px;
+}
+
+/* both authored lists render inline and unbulleted */
+body.ppm footer .footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+body.ppm footer .footer li {
+  margin: 0;
+}
+
+/* logo: measured ink 145px at 375/768 and 155px at 1440, on an asset that
+   carries ~27% trailing whitespace */
+body.ppm footer .footer img {
+  width: 199px;
+}
+
+/*
+ * Address. Set in the source's display face (CenturyStd-Book, unlicensed here
+ * -- see the handoff), on a 1.778 line box: 32px at the desktop 18px, and
+ * ~23px at the narrow 13px, which matches the source's measured 24px pitch.
+ */
+body.ppm footer .footer .section:first-child ul {
+  gap: 0 8px;
+  font-size: 13px;
+  line-height: 1.778;
+}
+
+@media (width >= 600px) {
+  body.ppm footer .footer .section:first-child ul {
+    gap: 0 20px;
+    font-size: 14px;
+  }
+}
+
+@media (width >= 900px) {
+  body.ppm footer .footer .section:first-child ul {
+    font-size: 18px;
+  }
+}
+
+/* the social icon is not a logo; measured 24x21 */
+body.ppm footer .footer a[href*="linkedin.com"] img {
+  width: 24px;
+}
+
+/* policy links: separated inline list, sitting above the copyright on narrow
+   viewports -- the reverse of the authored order */
+body.ppm footer .footer .section:last-child ul {
+  order: 1;
+
+  /* 12px keeps all four links on one line at 375, as the source does */
+  gap: 4px 12px;
+}
+
+body.ppm footer .footer .section:last-child p {
+  order: 2;
+}
+
+body.ppm footer .footer a:any-link {
+  color: inherit;
+}
+
+body.ppm footer .footer a:hover {
+  text-decoration: underline;
+}
+
+/*
+ * Tablet is a third layout, not an interpolation of the other two: the source
+ * lifts the social icon up beside the logo (measured x=648, y=3015 at 768,
+ * level with the logo at y=3020) and drops the address onto its own line
+ * below, where at 375 the icon still sits under the address.
+ */
+@media (width >= 600px) and (width < 900px) {
+  body.ppm footer .footer .section:first-child .default-content-wrapper {
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /*
+   * Only the address moves: it drops onto its own full-width line, leaving
+   * the logo and the social icon on the first line at either edge. The two
+   * paragraphs keep their authored order in every variant, so the one
+   * element whose position actually changes is the one that carries `order`.
+   */
+  body.ppm footer .footer .section:first-child ul {
+    order: 1;
+    flex-basis: 100%;
+  }
+}
+
+@media (width >= 900px) {
+  /*
+   * Row 1: logo | address | social, the social icon hard right. 98px is the
+   * measured distance from the end of the logo box (x=227) to the start of
+   * the address (x=325).
+   */
+  body.ppm footer .footer .section:first-child .default-content-wrapper {
+    flex-direction: row;
+
+    /*
+     * Top-aligned, not centred: in the source all three items span the full
+     * 51px row and their content sits at its top edge (logo ink +34, address
+     * +29, social +29 from the footer box). Centring pushes the address down
+     * by 9px.
+     */
+    align-items: flex-start;
+    gap: 0 98px;
+    min-height: 51px;
+  }
+
+  /*
+   * The logo and the social icon must not absorb the row's shortfall: with
+   * the default flex-shrink they are squeezed to ~172px and ~19px between
+   * 900 and 1200, where the row is narrower than its content. Only the
+   * address may give way (it wraps).
+   */
+  body.ppm footer .footer .section:first-child p {
+    flex: none;
+  }
+
+  /* absorbs the row's free space, which puts the social icon on the right
+     edge without needing a higher-specificity selector for it */
+  body.ppm footer .footer .section:first-child ul {
+    margin-right: auto;
+  }
+
+  body.ppm footer .footer img {
+    width: 212px;
+  }
+
+  /*
+   * Row 2: copyright left, policy links right -- so the order set for narrow
+   * viewports is reversed back here rather than being allowed to fall through.
+   */
+  body.ppm footer .footer .section:last-child .default-content-wrapper {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0 24px;
+
+    /* 3 + 78 = the source row's 81px, keeping the footer box at 160px total */
+    min-height: 78px;
+    padding-top: 3px;
+  }
+
+  body.ppm footer .footer .section:last-child p {
+    order: 1;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  body.ppm footer .footer .section:last-child {
+    margin-top: 0;
+  }
+
+  body.ppm footer .footer .section:last-child ul {
+    order: 2;
+    gap: 4px 24px;
+    margin-left: auto;
+  }
+}

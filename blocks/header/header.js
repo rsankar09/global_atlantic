@@ -2,7 +2,20 @@ import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
+let isDesktop = window.matchMedia('(min-width: 900px)');
+
+/**
+ * Re-points the desktop breakpoint at the themed `--nav-desktop-min`, so a
+ * theme whose nav needs more room than the 900px default keeps the hamburger
+ * until its items actually fit. Called once from decorate(), by which point
+ * decorateTemplateAndTheme() has already put the theme class on <body>.
+ */
+function resolveDesktopBreakpoint() {
+  const configured = getComputedStyle(document.body)
+    .getPropertyValue('--nav-desktop-min')
+    .trim();
+  if (configured) isDesktop = window.matchMedia(`(min-width: ${configured})`);
+}
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -54,6 +67,18 @@ function focusNavSection() {
 }
 
 /**
+ * A top-level nav item that is itself a link is a destination: clicking it has
+ * to navigate rather than toggle its flyout, and it is already in the tab
+ * order, so it must not also be made focusable as a disclosure. Such an item
+ * opens its flyout from CSS (:hover / :focus-within) instead.
+ * @param {Element} navSection The top-level <li>
+ * @returns {Boolean} true when the item links somewhere
+ */
+function isDestination(navSection) {
+  return !!navSection.querySelector(':scope > a[href]');
+}
+
+/**
  * Toggles all nav sections
  * @param {Element} sections The container element
  * @param {Boolean} expanded Whether the element should be expanded or collapsed
@@ -83,6 +108,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
     const navDrops = navSections.querySelectorAll('.nav-drop');
     if (isDesktop.matches) {
       navDrops.forEach((drop) => {
+        if (isDestination(drop)) return;
         if (!drop.hasAttribute('tabindex')) {
           drop.setAttribute('tabindex', 0);
           drop.addEventListener('focus', focusNavSection);
@@ -113,6 +139,8 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  resolveDesktopBreakpoint();
+
   // load nav as fragment
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
@@ -140,7 +168,8 @@ export default async function decorate(block) {
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
+      navSection.classList.toggle('nav-drop', !!navSection.querySelector('ul'));
+      if (isDestination(navSection)) return;
       navSection.addEventListener('click', () => {
         if (isDesktop.matches) {
           const expanded = navSection.getAttribute('aria-expanded') === 'true';

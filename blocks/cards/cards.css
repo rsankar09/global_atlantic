@@ -3,7 +3,13 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+
+  /*
+   * auto-fit, not auto-fill: with three cards in a container wide enough for
+   * four tracks, auto-fill keeps the empty fourth track and the row stops short
+   * of the container. auto-fit collapses it so the cards fill the width.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(257px, 1fr));
   gap: 24px;
 }
 
@@ -20,8 +26,90 @@
   line-height: 0;
 }
 
+/*
+ * A card grid wants one uniform media strip, so a fixed ratio here is the
+ * design rather than a stand-in for intrinsic dimensions. The `square`
+ * variant carries the 1:1 ratio measured in the source.
+ */
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards.square > ul > li img {
+  aspect-ratio: 1;
+}
+
+/* whole-card link — the card's own content supplies the accessible name */
+.cards .cards-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cards .cards-card-link:hover {
+  text-decoration: none;
+}
+
+.cards .cards-card-link:hover h1,
+.cards .cards-card-link:hover h2,
+.cards .cards-card-link:hover h3,
+.cards .cards-card-link:hover h4,
+.cards .cards-card-link:hover h5,
+.cards .cards-card-link:hover h6 {
+  text-decoration: underline;
+}
+
+.cards .cards-card-link:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/*
+ * Eyebrow. Rendered as a paragraph rather than a heading so the card title
+ * keeps the heading role; the source marks it up as an <h2> above an <h3>.
+ */
+.cards .cards-card-eyebrow {
+  margin: 0 0 16px;
+
+  /* 20px at desktop, an exact match for the source's pretitle */
+  font-size: var(--heading-font-size-s);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/*
+ * Card title. The source sets these in caps (AzoSans-Bold 24px/1.2,
+ * `text-transform: uppercase`, measured on `.cmp-card__title`), matching the
+ * eyebrow above it. The rule lives here rather than in the authored content so
+ * the DOM keeps its readable sentence case -- screen readers announce the real
+ * words, and the caps stay presentational.
+ */
+.cards .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
+  /*
+   * 24px is the measured source size. It is set literally because no heading
+   * token resolves to it at desktop -- the scale inverts at 900px, leaving
+   * `--heading-font-size-s` at 20px and `-m` at 22px there.
+   */
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* no card chrome: the media runs edge to edge and the body sits below it */
+.cards.plain > ul > li {
+  border: 0;
+  background-color: transparent;
+}
+
+.cards.plain .cards-card-body {
+  margin: 30px 0 0;
+}
+
+.cards.plain .cards-card-body > :first-child {
+  margin-top: 0;
 }

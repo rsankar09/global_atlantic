@@ -8,6 +8,7 @@
           "page": {
             "resourceType": "core/franklin/components/columns/v1/columns",
             "template": {
+              "model": "columns",
               "columns": "2",
               "rows": "1"
             }
@@ -33,6 +34,27 @@
           "name": "rows",
           "value": "",
           "label": "Rows"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "classes",
+          "value": "",
+          "label": "Layout",
+          "options": [
+            {
+              "name": "Equal widths",
+              "value": ""
+            },
+            {
+              "name": "One third / two thirds",
+              "value": "columns-33-66"
+            },
+            {
+              "name": "Media and text promo",
+              "value": "flush"
+            }
+          ]
         }
       ]
     }

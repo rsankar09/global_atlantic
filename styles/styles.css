@@ -19,6 +19,13 @@
   --link-color: #3b63fb;
   --link-hover-color: #1d3ecf;
 
+  /* brand accents and full-bleed band backgrounds */
+  --accent-color: #008578;
+  --accent-hover-color: #00655b;
+  --band-dark-color: #004f59;
+  --band-dark-text-color: var(--light-color);
+  --rule-color: #6a737b;
+
   /* fonts */
   --body-font-family: roboto, roboto-fallback, sans-serif;
   --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
@@ -38,6 +45,14 @@
 
   /* nav height */
   --nav-height: 64px;
+
+  /*
+   * Width at which the header swaps the hamburger for the full nav.
+   * blocks/header/header.js reads this, so a theme can move the switch to
+   * suit its own type scale. Keep in sync with the `@media` widths in
+   * blocks/header/header.css, which cannot read a custom property.
+   */
+  --nav-desktop-min: 900px;
 }
 
 /* fallback fonts */
@@ -254,8 +269,8 @@ button.button.secondary:disabled:focus-visible {
 /* high-impact call-to-action */
 a.button.accent,
 button.button.accent {
-  border-color: var(--link-color);
-  background-color: var(--link-color);
+  border-color: var(--accent-color);
+  background-color: var(--accent-color);
   color: var(--background-color);
 }
 
@@ -263,8 +278,8 @@ a.button.accent:hover,
 a.button.accent:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  border-color: var(--link-hover-color);
-  background-color: var(--link-hover-color);
+  border-color: var(--accent-hover-color);
+  background-color: var(--accent-hover-color);
 }
 
 a.button.accent[aria-disabled="true"],
@@ -281,6 +296,20 @@ button.button.accent:disabled:focus-visible {
 main img {
   max-width: 100%;
   width: auto;
+  height: auto;
+}
+
+/*
+ * The rule above is scoped to main, so nothing constrains an image authored
+ * into the nav or footer fragment -- header.css happens to size the brand
+ * logo, which masks it, but the first image in a footer fragment overflows the
+ * document and the whole page gains a horizontal scrollbar. Generic safety
+ * only: the stock header and footer carry no images, so this changes nothing
+ * that renders today.
+ */
+header img,
+footer img {
+  max-width: 100%;
   height: auto;
 }
 
@@ -322,4 +351,127 @@ main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
+}
+
+/*
+ * Full-bleed dark band. Source band is 448px tall with 45px of padding above
+ * and below its content and no vertical margin, so consecutive bands sit flush.
+ */
+main .section.dark {
+  background-color: var(--band-dark-color);
+  color: var(--band-dark-text-color);
+  margin: 0;
+  padding: 45px 0;
+}
+
+main .section.dark h1,
+main .section.dark h2,
+main .section.dark h3,
+main .section.dark h4,
+main .section.dark h5,
+main .section.dark h6 {
+  color: var(--band-dark-text-color);
+}
+
+/*
+ * Band whose content runs to its top and bottom edges. The source's promo band
+ * is exactly as tall as the promo itself -- the media pane touches both edges --
+ * so the section must contribute no vertical padding of its own.
+ */
+main .section.flush {
+  padding-block: 0;
+}
+
+/*
+ * Horizontal rule between two bands of the same colour. Drawn as a pseudo
+ * element rather than an authored <hr> because neither authoring surface
+ * offers one, and inset to the section content width rather than the viewport.
+ */
+main .section.divided {
+  padding-top: 0;
+}
+
+main .section.divided::before {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
+  width: min(100% - 48px, 1200px);
+  margin: 0 auto 45px;
+  border-top: 2px solid var(--rule-color);
+}
+
+/*
+ * Heading beside content. The section itself becomes the grid so that its two
+ * wrappers -- default content and a block -- sit side by side; each wrapper's
+ * own max-width and padding are released to the section.
+ */
+@media (width >= 900px) {
+  main .section.divided::before {
+    width: min(100% - 64px, 1200px);
+  }
+
+  main .section.split-33-66 {
+    display: grid;
+    grid-template-columns: minmax(0, 455fr) minmax(0, 910fr);
+    align-items: start;
+    column-gap: 45px;
+
+    /* centres a 1200px content box without capping the full-bleed background */
+    padding-inline: max(32px, calc((100% - 1200px) / 2));
+  }
+
+  main .section.split-33-66 > div {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* the section already provides the inset, so the rule spans the whole track */
+  main .section.split-33-66.divided::before {
+    width: 100%;
+  }
+}
+
+/*
+ * PPM chrome, scoped to the site theme.
+ *
+ * header and footer are shared by every page in the repo, so restyling those
+ * blocks to match one migrated site would regress the others. Anything
+ * PPM-specific about the chrome is therefore scoped to `body.ppm`, which
+ * decorateTemplateAndTheme() sets from the page's `theme` metadata.
+ *
+ * Only the shared tokens live here. The rules that consume them sit in the
+ * block CSS that owns them -- blocks/header/header.css and
+ * blocks/footer/footer.css -- each scoped to `body.ppm` in the same way.
+ */
+body.ppm {
+  /*
+   * Header band height. Measured from the capture screenshots as the white
+   * band plus its 1px rule: rows 0-79 + rule at y=80 on 375 and 768, rows
+   * 0-104 + rule at y=105 on 1440 (which matches the captured header rect,
+   * h=106). `header { height: var(--nav-height) }` above reserves the space,
+   * which is what keeps the fixed nav from overlapping the first section.
+   */
+  --nav-height: 81px;
+
+  /*
+   * PPM's first-level items need 1291px beside a 270px logo before they fit
+   * (measured: 301+257+245+154 = 957px of links, 40px of gutters, 24px of
+   * search). The project default of 900px would collapse the logo to nothing,
+   * so this theme stays on the hamburger until the real nav fits, with ~49px
+   * of slack to match the source's gap between the last item and the search.
+   */
+  --nav-desktop-min: 1340px;
+
+  /* first-level nav links; sampled rgb(106 115 123) from the 1440 capture */
+  --nav-link-color: #6a737b;
+
+  /* the 1px rule under the header, sampled as rgba(0 0 0 / 20%) over white */
+  --header-rule-color: rgb(0 0 0 / 20%);
+}
+
+@media (width >= 1340px) {
+  body.ppm {
+    --nav-height: 106px;
+  }
 }

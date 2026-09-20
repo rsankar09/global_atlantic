@@ -1,0 +1,82 @@
+/*
+ * Type sizes are held as custom properties so the small variant and the
+ * mobile step are a single override each. Leading is held as a ratio so a
+ * theme rescale stays proportional.
+ */
+.stats {
+  --stats-figure-size: 64px;
+  --stats-label-size: 16px;
+  --stats-leading: 1.2;
+
+  /* pulls the label up under the figure's descender space, as the source does */
+  --stats-overlap: -10px;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px 30px;
+}
+
+.stats.small {
+  --stats-figure-size: 40px;
+  --stats-label-size: 15px;
+  --stats-overlap: -6px;
+}
+
+.stats .stats-item {
+  text-align: center;
+}
+
+.stats .stats-figure {
+  padding-bottom: 10px;
+  font-size: var(--stats-figure-size);
+  font-weight: 400;
+  line-height: var(--stats-leading);
+}
+
+.stats .stats-figure p {
+  margin: 0;
+}
+
+/* the currency/percent mark sits at 0.625 of the numeral in the source */
+.stats .stats-symbol {
+  font-size: 0.625em;
+}
+
+.stats .stats-label {
+  margin-top: var(--stats-overlap);
+  font-size: var(--stats-label-size);
+  line-height: var(--stats-leading);
+  text-transform: uppercase;
+}
+
+.stats .stats-label p {
+  margin: 0;
+}
+
+.stats .stats-label sup {
+  font-size: 0.833em;
+  line-height: var(--stats-leading);
+}
+
+@media (width >= 600px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 900px) {
+  .stats {
+    --stats-figure-size: 112px;
+    --stats-label-size: 18px;
+    --stats-overlap: -18px;
+
+    /* minmax(0, 1fr), or the 112px figure's min-content width skews the tracks */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .stats.small {
+    --stats-figure-size: 52px;
+    --stats-label-size: 16px;
+    --stats-overlap: -9px;
+  }
+}

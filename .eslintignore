@@ -1,3 +1,25 @@
 helix-importer-ui
 dompurify.min.js
 *.min.js
+
+# Node-side importer harness: CLI tooling, not shipped browser code
+tools/importer/run.mjs
+tools/importer/qa.mjs
+tools/importer/shoot.mjs
+
+# Node-side capture/verification harness: same, and both drive Playwright
+# through an absolute path into the npx cache
+tools/crawl/capture.mjs
+tools/crawl/page-verify.mjs
+
+# Node-side page-assembly verification harness: drives Playwright against the
+# local dev server to check the composed page. Not shipped browser code.
+tools/verify/
+
+# Node-side accessibility harness: drives Playwright + axe-core against the
+# local dev server for the WCAG audit. Not shipped browser code.
+tools/a11y/
+
+# Crawl capture bundles: gitignored scratch input for the migration skills,
+# plus the Node-side scripts that derive from it. Not shipped browser code.
+capture/

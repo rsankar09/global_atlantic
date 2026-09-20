@@ -1,0 +1,63 @@
+<!--
+  Nav fragment for drafts/ppm-home.html (cmp-001).
+
+  Three sections, in the order blocks/header/header.js assigns them:
+  brand, sections, tools. The two-level flyout is a nested <ul>, which
+  header.js turns into .nav-drop.
+
+  The four gaps this fixture used to defer are now built, scoped to body.ppm
+  in blocks/header/. See capture/www-ppmamerica-com/chrome-verification.md:
+  - sticky band (static, not scroll-toggled -- the source carries
+    .header-sticky at scroll offset 0)
+  - top-level links navigate; flyouts open on hover and :focus-within
+  - the search affordance, tinted from icons/search.svg
+  - logo sizing, 173px below the nav breakpoint and 270px above
+
+  The "Our Story" panel measures 195px in the source = four 40px rows, so
+  Contact Us is included here. Confirm against the real nav document.
+-->
+<div>
+  <p><a href="/home" title="PPM America"><img src="./media/ppm-logo.png" alt="PPM America" width="1108" height="167"></a></p>
+</div>
+<div>
+  <ul>
+    <li>
+      <a href="/investment-solutions">Investment Solutions</a>
+      <ul>
+        <li><a href="/investment-solutions/fixed-income">Public Fixed Income</a></li>
+        <li><a href="/investment-solutions/commercial-real-estate-debt">Commercial Real Estate Debt</a></li>
+        <li><a href="/investment-solutions/private-and-structured-credit">Private and Structured Credit</a></li>
+        <li><a href="/investment-solutions/private-equity">Private Equity</a></li>
+        <li><a href="/investment-solutions/collateralized-loan-obligations">Collateralized Loan Obligations</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="/news-and-insights">News and Insights</a>
+      <ul>
+        <li><a href="/news-and-insights/blog">Blog</a></li>
+        <li><a href="/news-and-insights/market-insights">Market Insights</a></li>
+        <li><a href="/news-and-insights/press-releases">Press Releases</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="/our-commitments">Our Commitments</a>
+      <ul>
+        <li><a href="/our-commitments/responsible-investment">Responsible Investment</a></li>
+        <li><a href="/our-commitments/community-engagement">Community Engagement</a></li>
+        <li><a href="/our-commitments/inclusion-and-engagement">Inclusion and Engagement</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="/our-story">Our Story</a>
+      <ul>
+        <li><a href="/our-story/our-values">Our Values</a></li>
+        <li><a href="/our-story/our-team">Our Team</a></li>
+        <li><a href="/our-story/careers">Careers</a></li>
+        <li><a href="/our-story/contact-us">Contact Us</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<div>
+  <p><a href="/search" title="Search">Search</a></p>
+</div>

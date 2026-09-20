@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+  Assembled page fixture for https://www.ppmamerica.com/ (eds-page-assemble).
+
+  One section per inventory component, in source order, with the section
+  styles measured in capture/www-ppmamerica-com/styles.json. Copy and asset
+  dimensions are taken from capture/www-ppmamerica-com/dom.json, not retyped,
+  so line wrapping is comparable against the capture screenshots.
+
+  Header and footer load through page metadata (the <meta name="nav"/"footer">
+  tags below), which is how getMetadata('nav'/'footer') resolves them in
+  blocks/header and blocks/footer. In a CMS-authored page the same values come
+  from a `metadata` table:
+
+    | metadata |
+    | nav      | /drafts/ppm-nav    |
+    | footer   | /drafts/ppm-footer |
+
+  Casing: content is authored in sentence case wherever a block's CSS already
+  applies `text-transform: uppercase` (stats labels, card eyebrows), and in the
+  source's literal caps only where no rule supplies them (the two default-
+  content headings, the promo eyebrow, the promo CTA). See the assembly report
+  for why that split is temporary.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PPM America | Institutional Asset Manager</title>
+  <meta name="description" content="Our mission is to be seen by clients and their advisors as a consistently reliable partner to help them achieve their long-term value goals.">
+  <meta name="theme" content="ppm">
+  <meta name="nav" content="/drafts/ppm-nav">
+  <meta name="footer" content="/drafts/ppm-footer">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
+    move-to-http-header="true"
+  >
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script nonce="aem" src="/scripts/aem.js" type="module"></script>
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css"/>
+</head>
+<body>
+<header></header>
+<main>
+<div>
+  <div class="hero">
+    <div>
+      <div>
+        <picture><img src="./media/hero.jpeg" alt="" width="1757" height="499"></picture>
+      </div>
+    </div>
+    <div>
+      <div>
+        <h1>Focused on performance. Dedicated to our clients.</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="columns columns-33-66">
+    <div>
+      <div>
+        <h2>EVERYTHING WE DO COMES BACK TO OUR CLIENTS</h2>
+      </div>
+      <div>
+        <p>We have the experience and substantial resources to provide clients with investment
+          solutions across markets. However, like a smaller shop, we remain nimble, investment-led
+          and responsive to opportunities our teams discover together. Our mission is to deliver
+          solutions and service to meet the unique investment objectives of our investors.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="stats">
+    <div>
+      <div><p>$101</p></div>
+      <div><p>Billion in AUM<sup>1</sup></p></div>
+    </div>
+    <div>
+      <div><p>230</p></div>
+      <div><p>Employees</p></div>
+    </div>
+    <div>
+      <div><p>53%</p></div>
+      <div><p>Investment professionals</p></div>
+    </div>
+    <div>
+      <div><p>40</p></div>
+      <div><p>Research analysts</p></div>
+    </div>
+  </div>
+  <div class="section-metadata">
+    <div>
+      <div>style</div>
+      <div>dark</div>
+    </div>
+  </div>
+</div>
+<div>
+  <h2>OUR INVESTMENT PROFESSIONALS:</h2>
+  <div class="stats small">
+    <div>
+      <div><p>17</p></div>
+      <div><p>Years average investment experience</p></div>
+    </div>
+    <div>
+      <div><p>11</p></div>
+      <div><p>Years average PPM tenure</p></div>
+    </div>
+    <div>
+      <div><p>110</p></div>
+      <div><p>Graduate degrees</p></div>
+    </div>
+    <div>
+      <div><p>65</p></div>
+      <div><p>Professional designations</p></div>
+    </div>
+  </div>
+  <div class="section-metadata">
+    <div>
+      <div>style</div>
+      <div>dark, divided, split-33-66</div>
+    </div>
+  </div>
+</div>
+<div>
+  <h3>Our Insights</h3>
+  <div class="cards square plain">
+    <div>
+      <div>
+        <picture><img src="./media/card-1.jpeg" alt="" width="477" height="477"></picture>
+      </div>
+      <div>
+        <p>Emerging Markets Insights</p>
+        <h3>EM Private Credit: Another Arrow in the EM Quiver</h3>
+      </div>
+      <div>
+        <a href="/news-and-insights/market-insights/2026/08/ig-emd">/news-and-insights/market-insights/2026/08/ig-emd</a>
+      </div>
+    </div>
+    <div>
+      <div>
+        <picture><img src="./media/card-2.jpeg" alt="" width="477" height="477"></picture>
+      </div>
+      <div>
+        <p>CIO Letter</p>
+        <h3>An Argument for the Tight Spread, Elevated Yield Environment</h3>
+      </div>
+      <div>
+        <a href="/news-and-insights/market-insights/2026/07/cio-letter">/news-and-insights/market-insights/2026/07/cio-letter</a>
+      </div>
+    </div>
+    <div>
+      <div>
+        <picture><img src="./media/card-3.jpeg" alt="" width="477" height="477"></picture>
+      </div>
+      <div>
+        <p>Quarterly Insights</p>
+        <h3>Private Equity</h3>
+      </div>
+      <div>
+        <a href="/news-and-insights/market-insights/2026/07/pe-outlook">/news-and-insights/market-insights/2026/07/pe-outlook</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="columns flush">
+    <div>
+      <div>
+        <picture><img src="./media/promo.jpeg" alt="" width="720" height="504"></picture>
+      </div>
+      <div>
+        <p>OUR ADVANTAGE</p>
+        <ul>
+          <li>Clients are at the core of everything we do</li>
+          <li>Long-tenured teams and processes</li>
+          <li>Investment-led organization</li>
+          <li>Established as an institutional solutions provider</li>
+          <li>Network and access to investment community</li>
+          <li>Team-based culture</li>
+        </ul>
+        <p><strong><em><a href="/our-story">OUR STORY</a></em></strong></p>
+      </div>
+    </div>
+  </div>
+  <div class="section-metadata">
+    <div>
+      <div>style</div>
+      <div>light, flush</div>
+    </div>
+  </div>
+</div>
+<div>
+  <p>Firm statistics provided above are as of June 30, 2026. (1) AUM includes committed but
+    unfunded capital for PPM&rsquo;s private equity and commercial real estate businesses. AUM
+    includes both securities issued by PPM CLO vehicles held by PPM separately managed account
+    clients and the underlying collateral assets of the CLO vehicles managed by PPM.</p>
+  <p>PPM America, Inc. (PPM) is an indirect wholly owned subsidiary of Jackson Financial Inc.
+    Jackson Financial Inc. is a publicly traded company.</p>
+  <div class="section-metadata">
+    <div>
+      <div>style</div>
+      <div>light</div>
+    </div>
+  </div>
+</div>
+</main>
+<footer></footer>
+</body>
+</html>

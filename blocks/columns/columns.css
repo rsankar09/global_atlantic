@@ -19,6 +19,26 @@
   display: block;
 }
 
+/*
+ * <picture> is inline by default. In Universal Editor it sits inside an extra
+ * image-component div, where that inline box contributes a stray line box and
+ * the pane ends up ~23px taller than the same content authored as a document.
+ */
+.columns .columns-img-col picture {
+  display: block;
+  line-height: 0;
+}
+
+/*
+ * aem.js wraps a cell's content in a <p> when it is not already a block-level
+ * tag, which happens in Universal Editor because the picture arrives inside an
+ * image-component div. The inherited paragraph margin then offsets the image
+ * by 0.8em against the same content authored as a document.
+ */
+.columns .columns-img-col p {
+  margin: 0;
+}
+
 @media (width >= 900px) {
   .columns > div {
     align-items: center;
@@ -29,5 +49,90 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+
+  /*
+   * Asymmetric split. The source's two tracks measure 455px and 910px inside a
+   * 1410px container -- exactly 1:2 -- so the ratio is expressed as flex
+   * growth rather than fixed widths, and the columns align to the top.
+   */
+  .columns.columns-33-66 > div {
+    align-items: start;
+    gap: 45px;
+  }
+
+  /*
+   * Media-and-text promo: the image pane covers its half for the full height of
+   * the band instead of sitting at its intrinsic height. min-height, not
+   * height, so longer authored copy grows the band rather than overflowing it.
+   *
+   * Grid, not flex: with flex-basis 0 the text pane's padding is distributed
+   * outside its share, so the two halves come out 563/608 rather than equal.
+   * Auto-flow keeps it correct for column counts other than two.
+   */
+  .columns.flush > div {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: 30px;
+    min-height: 483px;
+  }
+
+  .columns.flush > div > div {
+    /* stated for both panes so neither relies on DOM order */
+    order: 1;
+
+    /* min-width:0, or a long list item's min-content width unbalances the halves */
+    min-width: 0;
+
+    /* border-box, or the text pane's padding is added outside its flex share
+       and the two halves stop being equal */
+    box-sizing: border-box;
+  }
+
+  .columns.columns-33-66 > div > div:first-child {
+    flex: 1;
+  }
+
+  .columns.columns-33-66 > div > div:nth-child(2) {
+    flex: 2;
+  }
+
+  /*
+   * The image must cover the pane whatever wraps it -- one level deep when
+   * authored as a document, two in Universal Editor -- so every box between
+   * the pane and the <img> is made to stretch rather than reaching through
+   * with a percentage height that resolves against the wrong ancestor.
+   */
+  .columns.flush > div > .columns-img-col {
+    order: 0;
+    display: grid;
+    overflow: hidden;
+  }
+
+  .columns.flush > div > .columns-img-col > *,
+  .columns.flush > div > .columns-img-col picture {
+    display: grid;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .columns.flush > div > .columns-img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .columns.flush > div > div:not(.columns-img-col) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 30px 30px 30px 15px;
+  }
+
+  .columns.flush > div > div:not(.columns-img-col) > :first-child {
+    margin-top: 0;
   }
 }

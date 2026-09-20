@@ -1,0 +1,13 @@
+URL,Image,Image Alt,Robots,Template
+/**,/media/og-default.jpg,PPM America — institutional asset manager,"index, follow",
+/investment-solutions/**,/media/og-investment-solutions.jpg,PPM America investment solutions,,investment-solution
+/news-and-insights/**,/media/og-news-and-insights.jpg,PPM America news and insights,,
+/news-and-insights/market-insights/**,/media/og-market-insights.jpg,PPM America market insights,,insight
+/news-and-insights/press-releases/**,/media/og-press-release.jpg,PPM America press release,,press-release
+/news-and-insights/blog/**,/media/og-blog.jpg,PPM America blog,,blog-post
+/our-story/our-team/**,/media/og-team.jpg,PPM America team,,team-bio
+/our-commitments/**,/media/og-our-commitments.jpg,PPM America commitments,,
+/privacy-policy/**,/media/og-default.jpg,PPM America,,legal
+/terms-and-conditions,/media/og-default.jpg,PPM America,,legal
+/social,,,"noindex, follow",
+/drafts/**,,,"noindex, nofollow",
