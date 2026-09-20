@@ -60,7 +60,8 @@ export default async function decorate(block) {
   // load footer as fragment, falling back to DEFAULT_FOOTER when none exists
   const footerMeta = getMetadata('footer');
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  const fragment = await loadFragment(footerPath) || await buildFallbackFooter(DEFAULT_FOOTER);
+  // const fragment = await loadFragment(footerPath) || await buildFallbackFooter(DEFAULT_FOOTER);
+  const fragment =  await buildFallbackFooter(DEFAULT_FOOTER);
 
   // decorate footer DOM
   block.textContent = '';
