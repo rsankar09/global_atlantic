@@ -5,6 +5,7 @@ dompurify.min.js
 # Node-side importer harness: CLI tooling, not shipped browser code
 tools/importer/run.mjs
 tools/importer/qa.mjs
+tools/importer/coverage.mjs
 tools/importer/shoot.mjs
 
 # Node-side capture/verification harness: same, and both drive Playwright

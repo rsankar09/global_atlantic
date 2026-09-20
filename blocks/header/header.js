@@ -1,5 +1,92 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, loadSections } from '../../scripts/aem.js';
+// eslint-disable-next-line import/no-cycle
+import { decorateMain } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
+
+/*
+ * Fallback nav, used only when no `/nav` document can be loaded.
+ *
+ * The nav is normally authored content: `loadFragment()` fetches the document
+ * named by the page's `nav` metadata, falling back to `/nav`. That remains the
+ * source of truth — an authored document always wins over this constant, and
+ * nothing here is reachable once one exists.
+ *
+ * This exists because the boilerplate treats a missing fragment as fatal:
+ * `loadFragment` resolves to `null` on a non-ok fetch, and reading
+ * `firstElementChild` off it throws out of decorate() before any markup is
+ * produced. The block is then left empty with `data-block-status="loaded"`,
+ * which reads as a broken header rather than as absent content.
+ *
+ * The shape mirrors what the /nav document must author, because it is fed
+ * through the same decorateMain() pipeline: three sections in the order
+ * header.js assigns them — brand, sections, tools — with the second level as
+ * a nested <ul>, which becomes .nav-drop.
+ *
+ * Keep this in sync with drafts/ppm-nav.plain.html, or delete both once /nav
+ * is authored in AEM.
+ */
+const DEFAULT_NAV = `
+  <div>
+    <p><a href="/" title="PPM America">PPM America</a></p>
+  </div>
+  <div>
+    <ul>
+      <li>
+        <a href="/investment-solutions">Investment Solutions</a>
+        <ul>
+          <li><a href="/investment-solutions/fixed-income">Public Fixed Income</a></li>
+          <li><a href="/investment-solutions/commercial-real-estate-debt">Commercial Real Estate Debt</a></li>
+          <li><a href="/investment-solutions/private-and-structured-credit">Private and Structured Credit</a></li>
+          <li><a href="/investment-solutions/private-equity">Private Equity</a></li>
+          <li><a href="/investment-solutions/collateralized-loan-obligations">Collateralized Loan Obligations</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/news-and-insights">News and Insights</a>
+        <ul>
+          <li><a href="/news-and-insights/blog">Blog</a></li>
+          <li><a href="/news-and-insights/market-insights">Market Insights</a></li>
+          <li><a href="/news-and-insights/press-releases">Press Releases</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/our-commitments">Our Commitments</a>
+        <ul>
+          <li><a href="/our-commitments/responsible-investment">Responsible Investment</a></li>
+          <li><a href="/our-commitments/community-engagement">Community Engagement</a></li>
+          <li><a href="/our-commitments/inclusion-and-engagement">Inclusion and Engagement</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/our-story">Our Story</a>
+        <ul>
+          <li><a href="/our-story/our-values">Our Values</a></li>
+          <li><a href="/our-story/our-team">Our Team</a></li>
+          <li><a href="/our-story/careers">Careers</a></li>
+          <li><a href="/our-story/contact-us">Contact Us</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <p><a href="/search" title="Search">Search</a></p>
+  </div>`;
+
+/**
+ * Decorates a nav markup string through the same pipeline loadFragment() uses,
+ * so the fallback and an authored document deliver an identical DOM — the
+ * `.section` and `.default-content-wrapper` wrappers every nav CSS selector
+ * depends on are produced by decorateMain(), not by this markup.
+ * @param {string} html The nav markup
+ * @returns {Promise<Element>} A decorated <main>
+ */
+async function buildFallbackNav(html) {
+  const main = document.createElement('main');
+  main.innerHTML = html;
+  decorateMain(main);
+  await loadSections(main);
+  return main;
+}
 
 // media query match that indicates mobile/tablet width
 let isDesktop = window.matchMedia('(min-width: 900px)');
@@ -141,10 +228,10 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 export default async function decorate(block) {
   resolveDesktopBreakpoint();
 
-  // load nav as fragment
+  // load nav as fragment, falling back to DEFAULT_NAV when none is published
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  const fragment = await loadFragment(navPath) || await buildFallbackNav(DEFAULT_NAV);
 
   // decorate nav DOM
   block.textContent = '';

@@ -332,9 +332,17 @@ body.ppm header nav[aria-expanded='true'] {
  * The boilerplate gives the brand `flex-basis: 128px`, and styles.css caps
  * images at their container width, so without this the logo is silently
  * clamped to 128px however wide the rule below asks for.
+ *
+ * `min-width` reserves the logo's footprint on the section rather than only
+ * on the image: the DEFAULT_NAV fallback in header.js renders a text brand
+ * when no /nav document exists, and a text brand has no width to size -- at
+ * desktop, where the nav is flex-start with zero gap, the first nav label
+ * then butts straight into it. Harmless when a logo image is present, since
+ * the image already fills this width.
  */
 body.ppm header nav .nav-brand {
   flex: 0 0 auto;
+  min-width: 173px;
 }
 
 /* brand: measured ink 126px wide at 375/768 and 197px at 1440; the asset
@@ -420,6 +428,11 @@ body.ppm header nav .nav-tools a:any-link {
     padding: 0 20px;
     gap: 0;
     justify-content: flex-start;
+  }
+
+  /* see the base rule: min-width carries the text-brand fallback case */
+  body.ppm header nav .nav-brand {
+    min-width: 270px;
   }
 
   body.ppm header nav .nav-brand img {
