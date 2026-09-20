@@ -21,6 +21,40 @@
           "name": "keywords",
           "multi": true,
           "label": "Keywords"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "breadcrumb-title",
+          "label": "Breadcrumb Title",
+          "description": "Optional. A shorter name for this page in breadcrumb trails."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "category",
+          "label": "Category",
+          "description": "Groups the page in listings, e.g. Blog, Market Insights, Press Release."
+        },
+        {
+          "component": "date-time",
+          "valueType": "string",
+          "name": "publish-date",
+          "label": "Publish Date",
+          "description": "Sorts the page in listings and prints on the article. Read by the query index."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "read-time",
+          "label": "Read Time",
+          "description": "Optional, e.g. '4 min.'. Shown in the card meta line."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "author",
+          "label": "Author"
         }
       ]
     }

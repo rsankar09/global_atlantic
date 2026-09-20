@@ -1,0 +1,39 @@
+/*
+ * The grid, the cards and their type all come from blocks/cards/cards.css,
+ * which card-list.js loads and opts into by adding the `cards plain` classes.
+ * Only what is specific to a query-driven list belongs here.
+ */
+
+.card-list .card-list-status {
+  margin: 24px 0 0;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.card-list .card-list-more {
+  display: block;
+  margin: 24px auto 0;
+}
+
+.card-list .card-list-more[hidden] {
+  display: none;
+}
+
+/*
+ * The listing grid is fixed at three tracks from 900px rather than reflowing on
+ * intrinsic width like the authored `cards` grid: the source's listing pages
+ * are always 3-up, and a trailing row of one or two wide cards reads as a
+ * mistake next to them.
+ */
+@media (width >= 600px) {
+  .card-list > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 900px) {
+  .card-list > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 30px;
+  }
+}

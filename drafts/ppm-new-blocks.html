@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+  DOCUMENT-AUTHORED surface fixture for the blocks added by eds-block-mapping:
+  breadcrumbs, cta-banner, bio-detail, card-list, and the hero `banner` variant.
+
+  Every simple block here is in the shape a spreadsheet/document author produces:
+  ONE row whose COLUMNS are the field groups. Its counterpart, ppm-new-blocks-ue.html,
+  carries the same content in the shape Universal Editor produces -- one row PER
+  field group. The two must measure identically; if they do not, the block is
+  reading rows where it should be reading cells.
+
+  Not an assembled source page -- one section per new block, so each can be
+  checked in isolation against the capture crops in capture/_detect/crops.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Matthew Graves, CFA | PPM America</title>
+  <meta name="description" content="Portfolio Manager and Emerging Markets Debt Analyst at PPM America.">
+  <meta property="og:title" content="Matthew Graves, CFA">
+  <meta name="breadcrumb-title" content="Matthew Graves">
+  <meta name="theme" content="ppm">
+  <meta name="nav" content="/drafts/ppm-nav">
+  <meta name="footer" content="/drafts/ppm-footer">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script nonce="aem" src="/scripts/aem.js" type="module"></script>
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css"/>
+</head>
+<body>
+<header></header>
+<main>
+
+<!-- hero, `banner` variant — the migrated `herotitle` on 107 pages.
+     2 field groups (image+imageAlt, text) = 1 row, 2 cells -->
+<div>
+  <div class="hero banner">
+    <div>
+      <div>
+        <picture><img src="./media/hero.jpeg" alt="" width="1757" height="499"></picture>
+      </div>
+      <div>
+        <h1>Our team</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- breadcrumbs — authored empty, trail derived from the URL -->
+<div>
+  <div class="breadcrumbs"></div>
+</div>
+
+<!-- bio-detail — 4 field groups (image+imageAlt, name, role, text) = 1 row, 4 cells -->
+<div>
+  <div class="bio-detail">
+    <div>
+      <div>
+        <picture><img src="./media/card-1.jpeg" alt="" width="750" height="750"></picture>
+      </div>
+      <div>Matthew Graves, CFA</div>
+      <div>Portfolio Manager / EMD Analyst</div>
+      <div>
+        <p>Matthew is a portfolio manager and analyst on PPM's emerging markets debt team,
+          where he covers frontier sovereigns and is responsible for security selection across
+          the hard currency strategies.</p>
+        <p>He joined PPM in 2014 and holds the Chartered Financial Analyst designation.</p>
+        <p><a href="https://www.linkedin.com/">Connect on LinkedIn</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- card-list — query-index driven. Document authoring supplies the query as a
+     two-column key/value table; degrades to a status line when the index is
+     unavailable, which is the expected result on a local draft -->
+<div>
+  <h2>Latest insights</h2>
+  <div class="card-list">
+    <div>
+      <div>Path</div>
+      <div>/news-and-insights/blog/</div>
+    </div>
+    <div>
+      <div>Limit</div>
+      <div>6</div>
+    </div>
+  </div>
+</div>
+
+<!-- cards — a container block, so its items are the rows on BOTH surfaces and
+     this markup is identical in the editor fixture. Shown here because
+     card-list borrows this presentation wholesale -->
+<div>
+  <div class="cards plain">
+    <div>
+      <div>
+        <picture><img src="./media/card-1.jpeg" alt="" width="750" height="422"></picture>
+      </div>
+      <div>
+        <p>Blog | September 15, 2026 | 3 min.</p>
+        <h3>Is a happy holiday season in store for retailers?</h3>
+        <p>The US consumer remains resilient despite higher gas prices, a trend we expect to
+          continue for the holiday season.</p>
+      </div>
+      <div><a href="/drafts/ppm-home"></a></div>
+    </div>
+    <div>
+      <div>
+        <picture><img src="./media/card-2.jpeg" alt="" width="750" height="422"></picture>
+      </div>
+      <div>
+        <p>Blog | August 6, 2026 | 4 min.</p>
+        <h3>Caution: Chinese imports impede European automakers</h3>
+        <p>European automakers face stiff competition in local markets from Chinese imports,
+          contributing to our deteriorating fundamental outlook.</p>
+      </div>
+      <div><a href="/drafts/ppm-home"></a></div>
+    </div>
+    <div>
+      <div>
+        <picture><img src="./media/card-3.jpeg" alt="" width="750" height="422"></picture>
+      </div>
+      <div>
+        <p>Blog | July 27, 2026 | 4 min.</p>
+        <h3>LatAm's political pendulum swings right</h3>
+        <p>We view Latin America's political shift to the right as cyclical rather than secular
+          and believe it may create investment opportunities.</p>
+      </div>
+      <div><a href="/drafts/ppm-home"></a></div>
+    </div>
+  </div>
+</div>
+
+<!-- cta-banner, dark band — the migrated `staticcard/cta` on 41 pages.
+     2 field groups (text, link+linkText) = 1 row, 2 cells -->
+<div>
+  <div class="cta-banner dark">
+    <div>
+      <div>
+        <h2>Talk to our institutional team</h2>
+        <p>We work with pensions, insurers and consultants across public and private markets.</p>
+      </div>
+      <div>
+        <p><a href="/drafts/ppm-home">Contact us</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="section-metadata">
+    <div>
+      <div>style</div>
+      <div>flush</div>
+    </div>
+  </div>
+</div>
+
+<!-- cta-banner, no band — the same block inside a normal section -->
+<div>
+  <div class="cta-banner">
+    <div>
+      <div>
+        <h2>Explore our investment solutions</h2>
+      </div>
+      <div>
+        <p><a href="/drafts/ppm-home">View strategies</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer></footer>
+</body>
+</html>

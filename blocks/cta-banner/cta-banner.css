@@ -1,0 +1,116 @@
+.cta-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+/*
+ * The cells are the flex items -- decorate() promotes them out of their row
+ * wrappers so that the block itself stays the flex container on both authoring
+ * surfaces, which deliver those cells in different row structures.
+ */
+.cta-banner .cta-banner-cell {
+  width: 100%;
+  max-width: 800px;
+}
+
+.cta-banner .cta-banner-cell > :first-child {
+  margin-top: 0;
+}
+
+.cta-banner .cta-banner-cell > :last-child {
+  margin-bottom: 0;
+}
+
+.cta-banner :is(h1, h2, h3, h4, h5, h6) {
+  margin-bottom: 0.4em;
+}
+
+/*
+ * The button row is the reason the band exists, so it gets a deliberate step
+ * away from the copy rather than the paragraph rhythm it would otherwise
+ * inherit from styles.css.
+ */
+.cta-banner p.button-wrapper {
+  margin: 16px 0 0;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Coloured bands
+ *
+ * On either band the accent teal that styles.css gives `a.button.accent` stops
+ * carrying enough contrast -- against the dark band it is too close in value,
+ * and against the accent band it is the same colour. So on both, the call to
+ * action inverts to the band's lightest tone and stays the brightest thing in
+ * the band.
+ *
+ * Base, hover and focus are grouped by state rather than by variant so that no
+ * rule precedes one of lower specificity.
+ * ---------------------------------------------------------------------------
+ */
+
+.cta-banner.dark {
+  background-color: var(--band-dark-color);
+  color: var(--band-dark-text-color);
+  padding: 40px 24px;
+}
+
+.cta-banner.accent {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  padding: 40px 24px;
+}
+
+.cta-banner.dark :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--band-dark-text-color);
+}
+
+.cta-banner.accent :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--background-color);
+}
+
+.cta-banner.dark a.button.accent {
+  border-color: var(--band-dark-text-color);
+  background-color: var(--band-dark-text-color);
+  color: var(--band-dark-color);
+}
+
+.cta-banner.accent a.button.accent {
+  border-color: var(--background-color);
+  background-color: var(--background-color);
+  color: var(--accent-hover-color);
+}
+
+.cta-banner.dark a.button.accent:hover,
+.cta-banner.dark a.button.accent:focus-visible {
+  border-color: var(--background-color);
+  background-color: var(--background-color);
+  color: var(--band-dark-color);
+}
+
+.cta-banner.accent a.button.accent:hover,
+.cta-banner.accent a.button.accent:focus-visible {
+  border-color: var(--light-color);
+  background-color: var(--light-color);
+}
+
+/* focus must stay visible against the band, not just against the page */
+.cta-banner.dark a.button.accent:focus-visible,
+.cta-banner.accent a.button.accent:focus-visible {
+  outline: 2px solid var(--background-color);
+  outline-offset: 2px;
+}
+
+@media (width >= 900px) {
+  .cta-banner {
+    gap: 12px;
+  }
+
+  .cta-banner.dark,
+  .cta-banner.accent {
+    padding: 56px 32px;
+  }
+}

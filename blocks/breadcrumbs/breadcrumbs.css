@@ -1,0 +1,112 @@
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.4;
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+
+/*
+ * The separator is a pseudo element rather than a character in the markup so
+ * that it is not announced: a screen reader reading the trail should hear the
+ * page names, not a slash between each pair.
+ */
+.breadcrumbs li + li::before {
+  content: "";
+  flex: none;
+  width: 1px;
+  height: 0.8em;
+  background-color: var(--rule-color);
+  transform: rotate(15deg);
+}
+
+.breadcrumbs a:any-link {
+  color: var(--dark-color);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--text-color);
+  text-decoration: underline;
+}
+
+.breadcrumbs a:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* the current page, which is deliberately not a link */
+.breadcrumbs [aria-current="page"] {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/*
+ * Compact. Deep paths such as
+ * /news-and-insights/market-insights/2026/07/cio-letter produce a six-item
+ * trail that wraps to three lines on a phone. This variant shows only the
+ * parent and the current page.
+ *
+ * `display: none` rather than a visual-only hide: a trail that reads
+ * differently to a screen reader than it looks is worse than a short one.
+ */
+.breadcrumbs.compact li:not(:nth-last-child(-n + 2)) {
+  display: none;
+}
+
+/* with the ancestors gone the parent starts the trail, so it loses its rule */
+.breadcrumbs.compact li:nth-last-child(2)::before {
+  content: none;
+}
+
+/*
+ * On a dark band the trail inherits the band's reversed text colour, so only
+ * the muted tones and the separator need restating.
+ */
+main .section.dark .breadcrumbs a:any-link,
+main .section.dark .breadcrumbs [aria-current="page"] {
+  color: var(--band-dark-text-color);
+}
+
+main .section.dark .breadcrumbs li + li::before {
+  background-color: var(--band-dark-text-color);
+  opacity: 0.6;
+}
+
+/*
+ * A trail directly below a page banner belongs to that banner, so the 40px gap
+ * styles.css puts between sections is closed up.
+ */
+main > .section:has(.hero) + .section:has(.breadcrumbs) {
+  margin-top: 0;
+}
+
+@media (width >= 900px) {
+  .breadcrumbs ol {
+    gap: 0 12px;
+  }
+
+  .breadcrumbs li {
+    gap: 12px;
+  }
+
+  /* the full trail fits once there is room for it */
+  .breadcrumbs.compact li {
+    display: flex;
+  }
+
+  .breadcrumbs.compact li:nth-last-child(2)::before {
+    content: "";
+  }
+}

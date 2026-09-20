@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!--
+  UNIVERSAL EDITOR surface fixture. Same content as ppm-new-blocks.html, in the
+  shape the editor delivers: for a simple block, ONE ROW PER FIELD GROUP with a
+  single value cell, in the order the model declares the fields. Container
+  blocks (cards) are unchanged, because their items are the rows on both
+  surfaces.
+
+  The data-aue-* attributes mirror what xwalk emits so the markup is realistic,
+  but they are not what is under test -- the ROW/CELL STRUCTURE is. The two
+  fixtures must measure identically at every breakpoint. Where they do not, a
+  block is reading rows where it should read cells, which is invisible on
+  whichever surface happens to have been tested first.
+
+  Field groups, derived from each block's model partial:
+    hero        image+imageAlt | text                          (classes -> variant)
+    bio-detail  image+imageAlt | name | role | text
+    card-list   path | category | limit
+    cta-banner  text | link+linkText                           (classes -> variant)
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Matthew Graves, CFA | PPM America</title>
+  <meta name="description" content="Portfolio Manager and Emerging Markets Debt Analyst at PPM America.">
+  <meta property="og:title" content="Matthew Graves, CFA">
+  <meta name="breadcrumb-title" content="Matthew Graves">
+  <meta name="theme" content="ppm">
+  <meta name="nav" content="/drafts/ppm-nav">
+  <meta name="footer" content="/drafts/ppm-footer">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script nonce="aem" src="/scripts/aem.js" type="module"></script>
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css"/>
+</head>
+<body>
+<header></header>
+<main>
+
+<!-- hero, `banner` variant — 2 field groups = 2 rows x 1 cell -->
+<div>
+  <div class="hero banner" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/banner" data-aue-type="component" data-aue-model="hero" data-aue-label="Hero">
+    <div>
+      <div data-aue-prop="image" data-aue-type="media">
+        <picture><img src="./media/hero.jpeg" alt="" width="1757" height="499"></picture>
+      </div>
+    </div>
+    <div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <h1>Our team</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- breadcrumbs — authored empty on both surfaces -->
+<div>
+  <div class="breadcrumbs" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/breadcrumbs" data-aue-type="component" data-aue-model="breadcrumbs" data-aue-label="Breadcrumbs"></div>
+</div>
+
+<!-- bio-detail — 4 field groups = 4 rows x 1 cell -->
+<div>
+  <div class="bio-detail" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/bio" data-aue-type="component" data-aue-model="bio-detail" data-aue-label="Bio Detail">
+    <div>
+      <div data-aue-prop="image" data-aue-type="media">
+        <picture><img src="./media/card-1.jpeg" alt="" width="750" height="750"></picture>
+      </div>
+    </div>
+    <div>
+      <div data-aue-prop="name" data-aue-type="text">Matthew Graves, CFA</div>
+    </div>
+    <div>
+      <div data-aue-prop="role" data-aue-type="text">Portfolio Manager / EMD Analyst</div>
+    </div>
+    <div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <p>Matthew is a portfolio manager and analyst on PPM's emerging markets debt team,
+          where he covers frontier sovereigns and is responsible for security selection across
+          the hard currency strategies.</p>
+        <p>He joined PPM in 2014 and holds the Chartered Financial Analyst designation.</p>
+        <p><a href="https://www.linkedin.com/">Connect on LinkedIn</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- card-list — 3 field groups = 3 rows x 1 cell. Note the `path` field is an
+     aem-content reference, so it arrives as an ANCHOR, not as text -->
+<div>
+  <h2>Latest insights</h2>
+  <div class="card-list" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/list" data-aue-type="component" data-aue-model="card-list" data-aue-label="Card List">
+    <div>
+      <div data-aue-prop="path" data-aue-type="reference"><a href="/news-and-insights/blog/">/news-and-insights/blog/</a></div>
+    </div>
+    <div>
+      <div data-aue-prop="category" data-aue-type="text"></div>
+    </div>
+    <div>
+      <div data-aue-prop="limit" data-aue-type="text">6</div>
+    </div>
+  </div>
+</div>
+
+<!-- cards — container block: items are the rows on both surfaces, so this
+     markup is identical to the document fixture apart from instrumentation -->
+<div>
+  <div class="cards plain" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/cards" data-aue-type="container" data-aue-filter="cards" data-aue-model="cards" data-aue-label="Cards">
+    <div data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/cards/item0" data-aue-type="component" data-aue-model="card" data-aue-label="Card">
+      <div data-aue-prop="image" data-aue-type="media">
+        <picture><img src="./media/card-1.jpeg" alt="" width="750" height="422"></picture>
+      </div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <p>Blog | September 15, 2026 | 3 min.</p>
+        <h3>Is a happy holiday season in store for retailers?</h3>
+        <p>The US consumer remains resilient despite higher gas prices, a trend we expect to
+          continue for the holiday season.</p>
+      </div>
+      <div data-aue-prop="link" data-aue-type="reference"><a href="/drafts/ppm-home"></a></div>
+    </div>
+    <div data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/cards/item1" data-aue-type="component" data-aue-model="card" data-aue-label="Card">
+      <div data-aue-prop="image" data-aue-type="media">
+        <picture><img src="./media/card-2.jpeg" alt="" width="750" height="422"></picture>
+      </div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <p>Blog | August 6, 2026 | 4 min.</p>
+        <h3>Caution: Chinese imports impede European automakers</h3>
+        <p>European automakers face stiff competition in local markets from Chinese imports,
+          contributing to our deteriorating fundamental outlook.</p>
+      </div>
+      <div data-aue-prop="link" data-aue-type="reference"><a href="/drafts/ppm-home"></a></div>
+    </div>
+    <div data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/cards/item2" data-aue-type="component" data-aue-model="card" data-aue-label="Card">
+      <div data-aue-prop="image" data-aue-type="media">
+        <picture><img src="./media/card-3.jpeg" alt="" width="750" height="422"></picture>
+      </div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <p>Blog | July 27, 2026 | 4 min.</p>
+        <h3>LatAm's political pendulum swings right</h3>
+        <p>We view Latin America's political shift to the right as cyclical rather than secular
+          and believe it may create investment opportunities.</p>
+      </div>
+      <div data-aue-prop="link" data-aue-type="reference"><a href="/drafts/ppm-home"></a></div>
+    </div>
+  </div>
+</div>
+
+<!-- cta-banner, dark band — 2 field groups = 2 rows x 1 cell. The `link` field
+     is a reference, so it arrives as a BARE anchor with no wrapping <p> -->
+<div>
+  <div class="cta-banner dark" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/cta0" data-aue-type="component" data-aue-model="cta-banner" data-aue-label="CTA Banner">
+    <div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <h2>Talk to our institutional team</h2>
+        <p>We work with pensions, insurers and consultants across public and private markets.</p>
+      </div>
+    </div>
+    <div>
+      <div data-aue-prop="link" data-aue-type="reference"><a href="/drafts/ppm-home">Contact us</a></div>
+    </div>
+  </div>
+  <div class="section-metadata">
+    <div>
+      <div>style</div>
+      <div>flush</div>
+    </div>
+  </div>
+</div>
+
+<!-- cta-banner, no band — the same block inside a normal section -->
+<div>
+  <div class="cta-banner" data-aue-resource="urn:aemconnection:/content/ppm/team/graves/jcr:content/root/cta1" data-aue-type="component" data-aue-model="cta-banner" data-aue-label="CTA Banner">
+    <div>
+      <div data-aue-prop="text" data-aue-type="richtext">
+        <h2>Explore our investment solutions</h2>
+      </div>
+    </div>
+    <div>
+      <div data-aue-prop="link" data-aue-type="reference"><a href="/drafts/ppm-home">View strategies</a></div>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer></footer>
+</body>
+</html>

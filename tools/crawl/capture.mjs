@@ -4,6 +4,7 @@
  *
  * Usage:
  *   node tools/crawl/capture.mjs <url> [<url> ...] [--out ./capture] [--bp 375,768,1440]
+ *     [--urls urls.txt] [--delay 4000] [--resume]
  */
 import { chromium } from '/Users/a10359614/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs';
 import fs from 'node:fs/promises';
@@ -13,10 +14,34 @@ const args = process.argv.slice(2);
 const urls = [];
 let outDir = './capture';
 let breakpoints = [375, 768, 1440];
+let delayMs = 4000;
+let resume = false;
+let urlFile = null;
 
 for (let i = 0; i < args.length; i += 1) {
-  if (args[i] === '--out') { outDir = args[i += 1]; } else if (args[i] === '--bp') { breakpoints = args[i += 1].split(',').map(Number); } else { urls.push(args[i]); }
+  const a = args[i];
+  if (a === '--out') { outDir = args[i += 1]; } else if (a === '--bp') {
+    breakpoints = args[i += 1].split(',').map(Number);
+  } else if (a === '--delay') { delayMs = Number(args[i += 1]); } else if (a === '--urls') {
+    urlFile = args[i += 1];
+  } else if (a === '--resume') { resume = true; } else { urls.push(a); }
 }
+
+if (urlFile) {
+  const txt = await fs.readFile(urlFile, 'utf8');
+  txt.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')).forEach((l) => urls.push(l));
+}
+
+const sleep = (ms) => new Promise((r) => { setTimeout(r, ms); });
+
+/*
+ * The origin sits behind a WAF that answers throttled requests with HTTP 200
+ * and a "Restricted" body rather than a 429. A naive crawler therefore records
+ * block pages as successful captures — the failure mode that poisoned the
+ * first run of this bundle. Detect it by content, never by status code.
+ */
+const WAF_BLOCKED = () => /<title>\s*Restricted\s*<\/title>/i.test(document.documentElement.outerHTML)
+  || /Access to this (page|site) (is|has been) restricted/i.test(document.body.innerText || '');
 
 const TRACKING_PARAMS = /^(utm_|gclid|fbclid|msclkid|mc_cid|mc_eid|_ga|ref|igshid)/i;
 
@@ -35,6 +60,21 @@ function slugify(raw) {
 
 // --- in-page helpers (stringified into the browser context) ---
 
+/*
+ * Consent and gate dismissal.
+ *
+ * Beyond the usual cookie-banner selectors, PPM's disclosure interstitial
+ * carries no id, class or aria-label a selector can reach, so it is matched on
+ * its button label instead. Two guards keep that from misfiring:
+ *
+ *   - the control must sit inside a dialog or a stacked fixed/absolute overlay,
+ *     so an ordinary "Accept" button in page content is never clicked;
+ *   - only ACCEPT is matched, never DECLINE -- declining leaves the content
+ *     gated, which is the failure this is meant to prevent.
+ *
+ * The overlay test is repeated in HAS_BANNER rather than shared, because each
+ * of these functions is stringified into the browser context on its own.
+ */
 const DISMISS = () => {
   const SELECTORS = [
     '#onetrust-accept-btn-handler',
@@ -46,19 +86,70 @@ const DISMISS = () => {
     '[data-testid*="accept" i]',
     '.cookie-banner button',
     '#cookie-accept',
+    /*
+     * PPM's disclosure agreement. Measured from the captured DOM:
+     *   div.cmp-modal_overlay > div.cmp-modal[role=dialog][data-decline-url]
+     *     > ... > div.dialog_form_actions > div.button > button#accept_id
+     * The id is stable across all 46 captured instances, so it is tried before
+     * the label fallback below.
+     */
+    '#accept_id',
+    '.cmp-modal .dialog_form_actions button.cmp-button',
   ];
   for (const sel of SELECTORS) {
     const el = document.querySelector(sel);
     if (el && el.offsetParent !== null) { el.click(); return sel; }
   }
+
+  // label-matched modal gates, e.g. PPM's disclosure agreement
+  const inOverlay = (start) => {
+    for (let n = start; n && n !== document.body; n = n.parentElement) {
+      if (n.tagName === 'DIALOG' || n.getAttribute('role') === 'dialog'
+        || n.getAttribute('role') === 'alertdialog') return true;
+      const s = getComputedStyle(n);
+      if ((s.position === 'fixed' || s.position === 'absolute')
+        && Number.parseInt(s.zIndex, 10) >= 100) return true;
+    }
+    return false;
+  };
+  const gate = [...document.querySelectorAll(
+    'button, a[href], input[type="button"], input[type="submit"]',
+  )].find((el) => {
+    const label = (el.value || el.textContent || '').trim();
+    if (!/^accept\b/i.test(label)) return false;
+    if (el.offsetParent === null || el.getBoundingClientRect().height === 0) return false;
+    return inOverlay(el);
+  });
+  if (gate) { gate.click(); return `label:accept (${gate.tagName.toLowerCase()})`; }
+
   return null;
 };
 
 const HAS_BANNER = () => {
-  const LEFTOVER = ['#onetrust-banner-sdk', '#onetrust-consent-sdk .onetrust-pc-dark-filter', '.cookie-banner', '#truste-consent-track'];
-  return LEFTOVER.some((s) => {
+  const LEFTOVER = ['#onetrust-banner-sdk', '#onetrust-consent-sdk .onetrust-pc-dark-filter', '.cookie-banner', '#truste-consent-track', '.cmp-modal_overlay', '.cmp-modal[aria-hidden="false"]'];
+  if (LEFTOVER.some((s) => {
     const el = document.querySelector(s);
     return el && el.offsetParent !== null && el.getBoundingClientRect().height > 0;
+  })) return true;
+
+  // a label-matched gate still on screen means the dismiss did not take
+  const inOverlay = (start) => {
+    for (let n = start; n && n !== document.body; n = n.parentElement) {
+      if (n.tagName === 'DIALOG' || n.getAttribute('role') === 'dialog'
+        || n.getAttribute('role') === 'alertdialog') return true;
+      const s = getComputedStyle(n);
+      if ((s.position === 'fixed' || s.position === 'absolute')
+        && Number.parseInt(s.zIndex, 10) >= 100) return true;
+    }
+    return false;
+  };
+  return [...document.querySelectorAll(
+    'button, a[href], input[type="button"], input[type="submit"]',
+  )].some((el) => {
+    const label = (el.value || el.textContent || '').trim();
+    if (!/^accept\b/i.test(label)) return false;
+    if (el.offsetParent === null || el.getBoundingClientRect().height === 0) return false;
+    return inOverlay(el);
   });
 };
 
@@ -251,7 +342,6 @@ async function capturePage(browser, rawUrl) {
   const url = normalise(rawUrl);
   const slug = slugify(url);
   const dir = path.join(outDir, slug);
-  await fs.mkdir(path.join(dir, 'screenshots'), { recursive: true });
 
   const result = {
     url, slug, dir, notes: [], jsErrors: [], status: null, ok: false,
@@ -269,6 +359,13 @@ async function capturePage(browser, rawUrl) {
     const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
     result.status = resp ? resp.status() : null;
     try { await page.waitForLoadState('networkidle', { timeout: 30000 }); } catch { result.notes.push('networkidle timed out (30s) — captured anyway'); }
+
+    // Bail out before writing anything if the WAF served a block page.
+    if (await page.evaluate(WAF_BLOCKED)) {
+      result.waf_blocked = true;
+      result.notes.push('WAF_BLOCKED: origin returned a "Restricted" block page (HTTP 200) — nothing captured');
+      return result;
+    }
 
     // cookie / consent dismiss (retry: banners often mount late)
     let dismissed = null;
@@ -299,6 +396,10 @@ async function capturePage(browser, rawUrl) {
     // auth wall / empty body detection
     if (pageMeta.body_text_length < 200) result.notes.push('body text under 200 chars — page may be empty or JS-blocked');
     if (/log ?in|sign ?in|password/i.test(pageMeta.page_title) && pageMeta.body_text_length < 1500) result.notes.push('looks like a login/auth wall');
+
+    // Only now that the page is known-good does the bundle directory get
+    // created, so a blocked or failed page leaves no empty shell behind.
+    await fs.mkdir(path.join(dir, 'screenshots'), { recursive: true });
 
     // screenshots per breakpoint
     for (const bp of breakpoints) {
@@ -377,9 +478,38 @@ async function capturePage(browser, rawUrl) {
 
 const browser = await chromium.launch({ headless: true, args: ['--disable-dev-shm-usage'] });
 const results = [];
-for (const u of urls) {
-  process.stderr.write(`→ capturing ${u}\n`);
-  results.push(await capturePage(browser, u));
+
+for (const [i, u] of urls.entries()) {
+  const slug = slugify(normalise(u));
+  let alreadyCaptured = false;
+  if (resume) {
+    try {
+      await fs.access(path.join(outDir, slug, 'meta.json'));
+      alreadyCaptured = true;
+      process.stderr.write(`↷ skip (already captured) ${u}\n`);
+    } catch { /* not captured yet */ }
+  }
+
+  if (!alreadyCaptured) {
+    process.stderr.write(`→ [${i + 1}/${urls.length}] ${u}\n`);
+    let r = await capturePage(browser, u);
+
+    /*
+     * A WAF block is a throttling signal, not a page defect: back off hard and
+     * retry rather than burning through the rest of the list collecting block
+     * pages. Escalating waits give the rate-limit window time to roll over.
+     */
+    for (let attempt = 1; attempt <= 3 && r.waf_blocked; attempt += 1) {
+      const backoff = 60000 * 2 ** (attempt - 1); // 1m, 2m, 4m
+      process.stderr.write(`  ⚠ WAF block — backing off ${backoff / 1000}s (retry ${attempt}/3)\n`);
+      await sleep(backoff);
+      r = await capturePage(browser, u);
+    }
+    if (r.waf_blocked) process.stderr.write('  ✗ blocked after 3 retries — recorded as failed\n');
+
+    results.push(r);
+    if (i < urls.length - 1) await sleep(delayMs);
+  }
 }
 await browser.close();
 

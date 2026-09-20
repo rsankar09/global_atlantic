@@ -1,0 +1,104 @@
+.bio-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bio-detail .bio-detail-portrait {
+  line-height: 0;
+
+  /* measured: portrait bottom 576 -> name top 605 in the source capture */
+  margin-bottom: 30px;
+}
+
+.bio-detail .bio-detail-portrait picture {
+  display: block;
+}
+
+/*
+ * A fixed 1:1 here is deliberate, not a stand-in for the asset's intrinsic
+ * dimensions. Every team portrait in the capture is a 376x376 square
+ * (border-radius 0), identical across all four bio pages measured, so the
+ * square crop IS the design. Portraits that are not already square are
+ * centre-cropped, which is what the source does too.
+ */
+.bio-detail .bio-detail-portrait img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/*
+ * The name is set in the brand teal in the source (rgb(0,133,120), which
+ * --accent-color already carries exactly) and is NOT uppercased -- it is
+ * sentence case, because a person's name with a post-nominal like "CFA"
+ * loses that distinction when it is capitalised.
+ */
+.bio-detail .bio-detail-name {
+  margin: 0;
+  color: var(--accent-color);
+  font-size: var(--heading-font-size-l);
+  line-height: 1.2;
+}
+
+/*
+ * Leading held as a ratio rather than the source's 32px literal so a theme
+ * rescale keeps it proportional. 32/18 = 1.78.
+ */
+.bio-detail .bio-detail-role {
+  margin: 4px 0 0;
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+  line-height: 1.78;
+}
+
+.bio-detail .bio-detail-bio > :first-child {
+  margin-top: 0;
+}
+
+/* a profile link is authored into the biography, so links there take the
+   brand treatment rather than the global --link-color */
+.bio-detail .bio-detail-bio a:any-link {
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+.bio-detail .bio-detail-bio a:hover {
+  color: var(--accent-hover-color);
+  text-decoration: underline;
+}
+
+.bio-detail .bio-detail-bio a:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+@media (width >= 600px) {
+  /*
+   * The portrait stops being full width before the layout goes two-column,
+   * or a square headshot ends up the size of a tablet viewport.
+   */
+  .bio-detail .bio-detail-rail {
+    max-width: 280px;
+  }
+}
+
+@media (width >= 900px) {
+  /*
+   * Portrait rail beside the biography, on the same 1:2 ratio the rest of the
+   * site uses for a narrow rail against content (see .columns-33-66 and
+   * .section.split-33-66), so bio pages sit on the same grid as everything
+   * else. The source measures 455 / 45 / 910 within its 1410 content width,
+   * which is exactly 1fr / gap / 2fr.
+   */
+  .bio-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: start;
+    gap: 45px;
+  }
+
+  .bio-detail .bio-detail-rail {
+    max-width: none;
+  }
+}

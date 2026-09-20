@@ -1,0 +1,65 @@
+{
+  "definitions": [
+    {
+      "title": "Bio Detail",
+      "id": "bio-detail",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Bio Detail",
+              "model": "bio-detail"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "bio-detail",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Portrait",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "value": "",
+          "label": "Alt",
+          "description": "Leave blank if the portrait adds nothing beyond the name printed next to it."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "name",
+          "value": "",
+          "label": "Name",
+          "description": "Including any post-nominals, e.g. 'Matthew Graves, CFA'."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "role",
+          "value": "",
+          "label": "Role"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "text",
+          "value": "",
+          "label": "Biography",
+          "description": "Add any profile link, such as LinkedIn, as a link at the end of this text."
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

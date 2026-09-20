@@ -30,8 +30,61 @@
   height: 100%;
 }
 
+/*
+ * ---------------------------------------------------------------------------
+ * Page banner
+ *
+ * The migrated site's `herotitle` component is an <h1> over a photograph on 107
+ * of its 169 pages. It is the same composition as the hero above -- image
+ * behind a reversed heading -- at a shallower height, so it is a variant here
+ * rather than a second block duplicating hero.css.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Column direction, not row. The block's two authored cells are the flex items
+ * here, so the default row direction would set them side by side and shrink the
+ * text cell to fit its content -- which quietly breaks the 1200px measure the
+ * h1 centres itself within, since that measure resolves against the cell.
+ * Column keeps each cell full width and still bottom-aligns them.
+ */
+.hero.banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 180px;
+}
+
+/*
+ * Contrast scrim. The heading is reversed to white and the banner photography
+ * is author-supplied, so nothing guarantees the 4.5:1 the text needs on its own
+ * -- a bright window behind the h1 is enough to fail it. Weighted to the bottom
+ * because that is where the text sits, leaving the top of the image untouched.
+ *
+ * ::after, not ::before. The scrim and the <picture> both sit at z-index -1, so
+ * they paint in tree order: as a ::before the scrim is the first child and the
+ * image paints straight over it. As the last child it lands on top of the image
+ * and still below the heading, which is what it has to do to be a scrim at all.
+ */
+.hero.banner::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 75%), rgb(0 0 0 / 30%) 55%, rgb(0 0 0 / 10%));
+}
+
+.hero.banner h1 {
+  margin-bottom: 0;
+  font-size: var(--heading-font-size-xl);
+}
+
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+
+  .hero.banner {
+    min-height: 260px;
   }
 }

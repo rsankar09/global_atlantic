@@ -14,3 +14,33 @@ indices:
       robots:
         select: head > meta[name="robots"]
         value: attribute(el, "content")
+      # Consumed by blocks/breadcrumbs (ancestor labels) and blocks/card-list
+      # (every field below). Anything a listing shows has to be indexed, or the
+      # block would have to fetch each page it lists.
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      description:
+        select: head > meta[property="og:description"]
+        value: attribute(el, "content")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, "content")
+      template:
+        select: head > meta[name="template"]
+        value: attribute(el, "content")
+      category:
+        select: head > meta[name="category"]
+        value: attribute(el, "content")
+      # The migrated `newsinsightsdate` component. Held as metadata rather than
+      # as a block so that the article page and the listing cards read one
+      # value instead of two that can disagree.
+      publishDate:
+        select: head > meta[name="publish-date"]
+        value: parseTimestamp(attribute(el, "content"), "YYYY-MM-DD")
+      readTime:
+        select: head > meta[name="read-time"]
+        value: attribute(el, "content")
+      author:
+        select: head > meta[name="author"]
+        value: attribute(el, "content")

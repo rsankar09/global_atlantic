@@ -40,6 +40,23 @@
           "value": "",
           "label": "Text",
           "valueType": "string"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "classes",
+          "value": "",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Hero",
+              "value": ""
+            },
+            {
+              "name": "Page Banner",
+              "value": "banner"
+            }
+          ]
         }
       ]
     }

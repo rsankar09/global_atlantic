@@ -71,7 +71,11 @@
         "cards",
         "columns",
         "fragment",
-        "stats"
+        "stats",
+        "breadcrumbs",
+        "cta-banner",
+        "bio-detail",
+        "card-list"
       ]
     }
   ]

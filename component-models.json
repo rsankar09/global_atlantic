@@ -20,6 +20,40 @@
         "name": "keywords",
         "multi": true,
         "label": "Keywords"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "breadcrumb-title",
+        "label": "Breadcrumb Title",
+        "description": "Optional. A shorter name for this page in breadcrumb trails."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "category",
+        "label": "Category",
+        "description": "Groups the page in listings, e.g. Blog, Market Insights, Press Release."
+      },
+      {
+        "component": "date-time",
+        "valueType": "string",
+        "name": "publish-date",
+        "label": "Publish Date",
+        "description": "Sorts the page in listings and prints on the article. Read by the query index."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "read-time",
+        "label": "Read Time",
+        "description": "Optional, e.g. '4 min.'. Shown in the card meta line."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "author",
+        "label": "Author"
       }
     ]
   },
@@ -162,6 +196,99 @@
     ]
   },
   {
+    "id": "bio-detail",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Portrait",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "value": "",
+        "label": "Alt",
+        "description": "Leave blank if the portrait adds nothing beyond the name printed next to it."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "name",
+        "value": "",
+        "label": "Name",
+        "description": "Including any post-nominals, e.g. 'Matthew Graves, CFA'."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "role",
+        "value": "",
+        "label": "Role"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "text",
+        "value": "",
+        "label": "Biography",
+        "description": "Add any profile link, such as LinkedIn, as a link at the end of this text."
+      }
+    ]
+  },
+  {
+    "id": "breadcrumbs",
+    "fields": [
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "classes",
+        "value": "",
+        "label": "Style",
+        "description": "The trail itself is derived from the page's location and from the query index. To rename the last item, set the page's Breadcrumb Title instead.",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Compact",
+            "value": "compact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "card-list",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "path",
+        "label": "Path",
+        "description": "The folder to list, e.g. /news-and-insights/blog. Pages below it are listed newest first."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "category",
+        "value": "",
+        "label": "Category",
+        "description": "Optional. Limits the list to pages whose Category metadata matches this exactly."
+      },
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "limit",
+        "value": "9",
+        "label": "Cards Per Page",
+        "description": "How many to show before the Load More button appears."
+      }
+    ]
+  },
+  {
     "id": "cards",
     "fields": [
       {
@@ -256,6 +383,53 @@
     ]
   },
   {
+    "id": "cta-banner",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "description": "The prompt. Start with a heading; keep the supporting copy to a sentence or two."
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "value": "",
+        "label": "Link Text",
+        "description": "The button label. Say where the link goes — avoid 'Learn more' on its own."
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "classes",
+        "value": "",
+        "label": "Band",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "Dark",
+            "value": "dark"
+          },
+          {
+            "name": "Accent",
+            "value": "accent"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {
@@ -288,6 +462,23 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "classes",
+        "value": "",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Hero",
+            "value": ""
+          },
+          {
+            "name": "Page Banner",
+            "value": "banner"
+          }
+        ]
       }
     ]
   },
