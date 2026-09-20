@@ -231,7 +231,8 @@ export default async function decorate(block) {
   // load nav as fragment, falling back to DEFAULT_NAV when none is published
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath) || await buildFallbackNav(DEFAULT_NAV);
+  // const fragment = await loadFragment(navPath) || await buildFallbackNav(DEFAULT_NAV);
+  const fragment = await buildFallbackNav(DEFAULT_NAV);
 
   // decorate nav DOM
   block.textContent = '';
