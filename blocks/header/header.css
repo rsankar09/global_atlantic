@@ -1,211 +1,560 @@
-:root {
-  --nav-height: 106px;
-}
-
+/* header and nav layout */
 header .nav-wrapper {
-  position: fixed;
-  top: 0;
+  background-color: var(--background-color);
   width: 100%;
-  background: #fff;
-  z-index: 1000;
-  box-shadow: inset 0 -1px 0 #d9d9d9;
+  z-index: 2;
+  position: fixed;
 }
 
 header nav {
-  height: var(--nav-height);
+  box-sizing: border-box;
   display: grid;
   grid-template:
-    "brand tools hamburger" 106px
-    "sections sections sections" auto
-    / 1fr auto auto;
+    'hamburger brand tools' var(--nav-height)
+    'sections sections sections' 1fr / auto 1fr auto;
   align-items: center;
-  padding: 0 20px;
+  gap: 0 24px;
+  margin: auto;
+  max-width: 1248px;
+  height: var(--nav-height);
+  padding: 0 24px;
+  font-family: var(--body-font-family);
 }
 
-.nav-brand img {
-  width: 173px;
-  display: block;
+header nav[aria-expanded='true'] {
+  grid-template:
+    'hamburger brand' var(--nav-height)
+    'sections sections' 1fr
+    'tools tools' var(--nav-height) / auto 1fr;
+  overflow-y: auto;
+  min-height: 100dvh;
 }
 
-.nav-tools {
-  margin-right: 22px;
+@media (width >= 900px) {
+  header .nav-wrapper {
+    position: relative;
+  }
+
+  header nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 0 32px;
+    max-width: 1264px;
+    padding: 0 32px;
+  }
+
+  header nav[aria-expanded='true'] {
+    min-height: 0;
+    overflow: visible;
+  }
 }
 
-.nav-tools a {
-  display: block;
-  width: 24px;
-  height: 24px;
-  font-size: 0;
-  background-color: #008578;
-  mask: url('/icons/search.svg') center / contain no-repeat;
-  -webkit-mask: url('/icons/search.svg') center / contain no-repeat;
+header nav p {
+  margin: 0;
+  line-height: 1;
 }
 
-.nav-hamburger button {
+header nav a:any-link {
+  color: currentcolor;
+}
+
+/* hamburger */
+header nav .nav-hamburger {
+  grid-area: hamburger;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+
+header nav .nav-hamburger button {
+  height: 22px;
+  margin: 0;
   border: 0;
-  background: transparent;
+  border-radius: 0;
   padding: 0;
-  cursor: pointer;
+  background-color: var(--background-color);
+  color: inherit;
+  overflow: initial;
+  text-overflow: initial;
+  white-space: initial;
 }
 
-.nav-hamburger-icon,
-.nav-hamburger-icon::before,
-.nav-hamburger-icon::after {
+header nav .nav-hamburger-icon,
+header nav .nav-hamburger-icon::before,
+header nav .nav-hamburger-icon::after {
+  box-sizing: border-box;
   display: block;
-  width: 26px;
-  height: 2px;
-  background: #008578;
   position: relative;
+  width: 20px;
 }
 
-.nav-hamburger-icon::before,
-.nav-hamburger-icon::after {
+header nav .nav-hamburger-icon::before,
+header nav .nav-hamburger-icon::after {
   content: '';
   position: absolute;
-  left: 0;
+  background: currentcolor;
 }
 
-.nav-hamburger-icon::before {
-  top: -7px;
+header nav[aria-expanded='false'] .nav-hamburger-icon,
+header nav[aria-expanded='false'] .nav-hamburger-icon::before,
+header nav[aria-expanded='false'] .nav-hamburger-icon::after {
+  height: 2px;
+  border-radius: 2px;
+  background: currentcolor;
 }
 
-.nav-hamburger-icon::after {
-  top: 7px;
+header nav[aria-expanded='false'] .nav-hamburger-icon::before {
+  top: -6px;
 }
 
-.nav-sections {
+header nav[aria-expanded='false'] .nav-hamburger-icon::after {
+  top: 6px;
+}
+
+header nav[aria-expanded='true'] .nav-hamburger-icon {
+  height: 22px;
+}
+
+header nav[aria-expanded='true'] .nav-hamburger-icon::before,
+header nav[aria-expanded='true'] .nav-hamburger-icon::after {
+  top: 3px;
+  left: 1px;
+  transform: rotate(45deg);
+  transform-origin: 2px 1px;
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+}
+
+header nav[aria-expanded='true'] .nav-hamburger-icon::after {
+  top: unset;
+  bottom: 3px;
+  transform: rotate(-45deg);
+}
+
+@media (width >= 900px) {
+  header nav .nav-hamburger {
+    display: none;
+    visibility: hidden;
+  }
+}
+
+/* brand */
+header .nav-brand {
+  grid-area: brand;
+  flex-basis: 128px;
+  font-size: var(--heading-font-size-s);
+  font-weight: 700;
+  line-height: 1;
+}
+
+header nav .nav-brand img {
+  width: 128px;
+  height: auto;
+}
+
+/* sections */
+header nav .nav-sections {
+  grid-area: sections;
+  flex: 1 1 auto;
   display: none;
+  visibility: hidden;
 }
 
 header nav[aria-expanded='true'] .nav-sections {
   display: block;
-  padding-bottom: 40px;
+  visibility: visible;
+  align-self: start;
 }
 
-.nav-sections ul {
+header nav .nav-sections ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding-left: 0;
+  font-size: var(--body-font-size-s);
 }
 
-.nav-sections > .default-content-wrapper > ul > li {
-  padding: 16px 0;
+header nav .nav-sections ul > li {
+  font-weight: 500;
 }
 
-.nav-sections > .default-content-wrapper > ul > li > a {
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-decoration: none;
-  color: #323232;
+header nav .nav-sections ul > li > ul {
+  margin-top: 0;
 }
 
-.nav-sections > .default-content-wrapper > ul > li > ul {
-  margin-top: 12px;
-  margin-left: 16px;
+header nav .nav-sections ul > li > ul > li {
+  font-weight: 400;
 }
 
-.nav-sections > .default-content-wrapper > ul > li > ul li {
-  padding: 8px 0;
-}
-
-.nav-sections > .default-content-wrapper > ul > li > ul a {
-  text-decoration: none;
-  color: #323232;
-}
-
-@media (min-width: 1340px) {
-
-  header nav {
-    display: flex;
-    align-items: stretch;
-    height: 106px;
-    padding: 0 20px;
-  }
-
-  .nav-brand {
-    flex: 0 0 auto;
-    min-width: 270px;
-  }
-
-  .nav-brand img {
-    width: 270px;
-  }
-
-  .nav-hamburger {
-    display: none;
-  }
-
-  .nav-sections {
+@media (width >= 900px) {
+  header nav .nav-sections {
     display: block;
-    flex: 0 0 auto;
-    margin-left: 0;
-  }
-
-  .nav-tools {
-    margin-left: auto;
-    margin-right: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .nav-sections .default-content-wrapper,
-  .nav-sections .default-content-wrapper > ul {
-    height: 100%;
-  }
-
-  .nav-sections .default-content-wrapper > ul {
-    display: flex;
-    gap: 0;
-    align-items: stretch;
-  }
-
-  .nav-sections .default-content-wrapper > ul > li {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-  }
-
-  .nav-sections .default-content-wrapper > ul > li > a {
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: #005151;
-    text-decoration: none;
+    visibility: visible;
     white-space: nowrap;
   }
 
-  .nav-sections .default-content-wrapper > ul > li > ul {
-    display: none;
+  header nav[aria-expanded='true'] .nav-sections {
+    align-self: unset;
   }
 
-  .nav-sections .default-content-wrapper > ul > li:hover > ul,
-  .nav-sections .default-content-wrapper > ul > li:focus-within > ul {
+  header nav .nav-sections .nav-drop {
+    position: relative;
+    padding-right: 16px;
+    cursor: pointer;
+  }
+
+  header nav .nav-sections .nav-drop::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0.5em;
+    right: 2px;
+    transform: rotate(135deg);
+    width: 6px;
+    height: 6px;
+    border: 2px solid currentcolor;
+    border-radius: 0 1px 0 0;
+    border-width: 2px 2px 0 0;
+  }
+
+  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
+    top: unset;
+    bottom: 0.5em;
+    transform: rotate(315deg);
+  }
+
+  header nav .nav-sections ul {
+    display: flex;
+    gap: 24px;
+    margin: 0;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li {
+    flex: 0 1 auto;
+    position: relative;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li > ul {
+    display: none;
+    position: relative;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
+    display: block;
+    position: absolute;
+    left: -24px;
+    width: 200px;
+    top: 150%;
+    padding: 16px;
+    background-color: var(--light-color);
+    white-space: initial;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 16px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--light-color);
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
+    padding: 8px 0;
+  }
+}
+
+/* tools */
+header nav .nav-tools {
+  grid-area: tools;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * PPM theme
+ *
+ * Scoped to `body.ppm` (set by decorateTemplateAndTheme from the page's
+ * `theme` metadata) because the header block is shared by every site in this
+ * repo. Tokens are defined in styles/styles.css; everything below only
+ * consumes them.
+ *
+ * Measurements are from capture/www-ppmamerica-com (styles.json rects at
+ * 1440, screenshot pixel scans at 375/768).
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Sticky at every width. The source carries `.header-sticky` on the header
+ * container at scroll offset 0, so this is a static position rather than a
+ * class toggled on scroll -- no scroll listener is needed or justified.
+ */
+body.ppm header .nav-wrapper {
+  position: fixed;
+
+  /*
+   * Drawn inset rather than as a border so the band stays exactly
+   * var(--nav-height) tall -- a 1px border would push the painted band to
+   * 107px against the source's measured 106px.
+   */
+  box-shadow: inset 0 -1px 0 var(--header-rule-color);
+}
+
+/*
+ * Source header is full-bleed: the brand sits at x=20 at both 768 and 1440
+ * rather than inside a centred content column, so the boilerplate's 1248px
+ * cap is released.
+ */
+body.ppm header nav {
+  max-width: none;
+  padding: 0 20px;
+
+  /*
+   * Brand left, search, then hamburger hard right -- the source's mobile
+   * order. The boilerplate puts the hamburger first, so the areas are
+   * restated rather than inherited. 22px is the measured gap between the
+   * search and hamburger icons at both 375 and 768.
+   */
+  gap: 0 22px;
+  grid-template:
+    'brand tools hamburger' var(--nav-height)
+    'sections sections sections' 1fr / 1fr auto auto;
+}
+
+body.ppm header nav[aria-expanded='true'] {
+  grid-template:
+    'brand tools hamburger' var(--nav-height)
+    'sections sections sections' 1fr / 1fr auto auto;
+}
+
+/*
+ * The boilerplate gives the brand `flex-basis: 128px`, and styles.css caps
+ * images at their container width, so without this the logo is silently
+ * clamped to 128px however wide the rule below asks for.
+ *
+ * `min-width` reserves the logo's footprint on the section rather than only
+ * on the image: the DEFAULT_NAV fallback in header.js renders a text brand
+ * when no /nav document exists, and a text brand has no width to size -- at
+ * desktop, where the nav is flex-start with zero gap, the first nav label
+ * then butts straight into it. Harmless when a logo image is present, since
+ * the image already fills this width.
+ */
+body.ppm header nav .nav-brand {
+  flex: 0 0 auto;
+  min-width: 173px;
+}
+
+/* brand: measured ink 126px wide at 375/768 and 197px at 1440; the asset
+   carries ~27% trailing whitespace, so the box is the ink / 0.73 */
+body.ppm header nav .nav-brand img {
+  width: 173px;
+}
+
+/* hamburger: measured 26x17, three bars, in the brand accent */
+body.ppm header nav .nav-hamburger button {
+  color: var(--accent-color);
+}
+
+body.ppm header nav .nav-hamburger-icon,
+body.ppm header nav .nav-hamburger-icon::before,
+body.ppm header nav .nav-hamburger-icon::after {
+  width: 26px;
+}
+
+body.ppm header nav[aria-expanded='false'] .nav-hamburger-icon::before {
+  top: -7px;
+}
+
+body.ppm header nav[aria-expanded='false'] .nav-hamburger-icon::after {
+  top: 7px;
+}
+
+/*
+ * Search affordance. The nav fragment authors a plain text link, which keeps
+ * the accessible name and the href; the glyph is a mask so it can be tinted
+ * with the brand accent (sampled rgb(0 133 120) = --accent-color). The label
+ * is collapsed rather than removed so screen readers still announce it.
+ */
+body.ppm header nav .nav-tools a:any-link {
+  display: block;
+  width: 24px;
+  height: 24px;
+  font-size: 0;
+  color: transparent;
+  background-color: var(--accent-color);
+  mask: url('/icons/search.svg') center / 24px 24px no-repeat;
+}
+
+/*
+ * Between the project's desktop breakpoint and this theme's, the boilerplate
+ * has already switched to the full nav but PPM's items do not yet fit, so the
+ * hamburger layout is restored. Without this the logo is squeezed to nothing
+ * to make room for the links. Upper bound must match --nav-desktop-min.
+ */
+@media (width >= 900px) and (width < 1340px) {
+  body.ppm header nav {
+    display: grid;
+    max-width: none;
+    padding: 0 20px;
+    gap: 0 22px;
+  }
+
+  body.ppm header nav[aria-expanded='true'] {
+    min-height: 100dvh;
+    overflow-y: auto;
+  }
+
+  body.ppm header nav .nav-hamburger {
+    display: flex;
+    visibility: visible;
+  }
+
+  body.ppm header nav .nav-sections {
+    display: none;
+    visibility: hidden;
+  }
+
+  body.ppm header nav[aria-expanded='true'] .nav-sections {
+    display: block;
+    visibility: visible;
+    align-self: start;
+  }
+}
+
+@media (width >= 1340px) {
+  body.ppm header nav {
+    max-width: none;
+    padding: 0 20px;
+    gap: 0;
+    justify-content: flex-start;
+  }
+
+  /* see the base rule: min-width carries the text-brand fallback case */
+  body.ppm header nav .nav-brand {
+    min-width: 270px;
+  }
+
+  body.ppm header nav .nav-brand img {
+    width: 270px;
+  }
+
+  /* search sits hard right; sections take their natural width next to the brand */
+  body.ppm header nav .nav-tools {
+    margin-left: auto;
+  }
+
+  /*
+   * First-level links: measured 16px / 4px tracking / uppercase, with ~16px
+   * of padding either side and no gap between items (the source's four items
+   * are exactly contiguous: 326+282+268+177 = 1053).
+   */
+  body.ppm header nav .nav-sections .default-content-wrapper > ul {
+    gap: 0;
+
+    /*
+     * Cancels the first item's leading padding so the first label starts
+     * where the source puts it (x=290, i.e. 73px past the end of the logo
+     * ink) rather than 16px further right. Spacing between items is
+     * unaffected.
+     */
+    margin-left: -16px;
+  }
+
+  /*
+   * Items span the full band height so the flyout's `top: 100%` lands on the
+   * bottom of the header (measured y=103 against a 105px band) rather than on
+   * the bottom of the link box, and so the whole band is a hover target.
+   */
+  body.ppm header nav .nav-sections,
+  body.ppm header nav .nav-sections .default-content-wrapper,
+  body.ppm header nav .nav-sections .default-content-wrapper > ul {
+    align-self: stretch;
+    height: 100%;
+  }
+
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 16px;
+  }
+
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li > a:any-link {
+    color: var(--nav-link-color);
+    font-size: 16px;
+    font-weight: 700;
+
+    /* held as a ratio; 16 x 1.75 is the source's measured 28px line box */
+    line-height: 1.75;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /*
+   * The source shows no disclosure chevron on the top-level items, so the
+   * flyout opens on hover, and on focus-within so it is reachable by
+   * keyboard without a control the design does not have. The top-level
+   * anchors stay real links -- see header.js, which leaves the click toggle
+   * off any item that is itself a destination.
+   */
+  body.ppm header nav .nav-sections .nav-drop {
+    padding-right: 16px;
+  }
+
+  body.ppm header nav .nav-sections .nav-drop::after {
+    content: none;
+  }
+
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li.nav-drop:hover > ul,
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li.nav-drop:focus-within > ul {
     display: block;
     position: absolute;
     top: 100%;
+
+    /*
+     * Centred under its parent item, which is what the source does: each
+     * 220px panel shares its item's centre (item 1 spans 275-601, centre 438;
+     * panel 328-548, centre 438), rather than aligning to the item's edge.
+     */
     left: 50%;
     transform: translateX(-50%);
+    box-sizing: border-box;
     width: 220px;
-    background: #fff;
+
+    /*
+     * Asymmetric, as measured: the panel's first row starts 12px below its
+     * top edge (source ul y=103, first item y=115) and the remaining 23px
+     * falls below the last row.
+     */
     padding: 12px 20px 23px;
-    box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
-    z-index: 999;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+    white-space: initial;
   }
 
-  .nav-sections .default-content-wrapper > ul > li > ul li {
+  /* the boilerplate draws a caret on the flyout; the source has none */
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
+    content: none;
+  }
+
+  /*
+   * Second level: measured 18px, weight 500, rgb(50 50 50). Rows are 40px for
+   * a single line and 60px for a wrapped one, which resolves to a 20px line
+   * box with 10px of padding either side -- not a 40px line box, which would
+   * make the wrapped rows 80px.
+   */
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
     padding: 10px 0;
   }
 
-  .nav-sections .default-content-wrapper > ul > li > ul a {
+  body.ppm header nav .nav-sections .default-content-wrapper > ul > li > ul a:any-link {
     display: block;
+    color: #323232;
     font-size: 18px;
     font-weight: 500;
-    color: #323232;
-    line-height: 1.2;
-    text-decoration: none;
+    line-height: 1.111;
+    letter-spacing: normal;
+    text-transform: none;
   }
 }
