@@ -27,7 +27,12 @@ import { loadFragment } from '../fragment/fragment.js';
  */
 const DEFAULT_NAV = `
   <div>
-    <p><a href="/" title="PPM America">PPM America</a></p>
+    <p>
+    <a href="/" title="PPM America">PPM America</a>
+    <a class="cmp-image__link" data-cmp-clickable="" href="/home">
+        <img src="/content/dam/gademo/ppmlogo.png" loading="lazy" class="cmp-image__image" itemprop="contentUrl" width="1108" height="167" alt="PPM Logo">
+    </a>
+    </p>
   </div>
   <div>
     <ul>
